@@ -1,12 +1,12 @@
-// Controllers for Users
-const Users = require('../models/Users');
+// Controllers for CategoryPet
+const CategoryPet = require('../models/CategoryPet');
 
 module.exports = {
     getAllData: (req, res) => {
-        Users.find()
+        CategoryPet.find()
         .then(result => {
             res.status(200).send({
-                message: 'Get all data users',
+                message: 'Get all data categoryPet',
                 result
             })
         })
@@ -18,7 +18,7 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        Users.create(
+        CategoryPet.create(
             req.body,
         (error, result) => {
             if(error){
@@ -29,7 +29,7 @@ module.exports = {
             }
             else {
                 res.send({
-                    message: "success add user", 
+                    message: "success add categoryPet", 
                     result
                 })
             }
@@ -37,12 +37,12 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        Users.findOne({
+        CategoryPet.findOne({
             '_id': id
         })
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data users',
+                message: 'Get all detail data categoryPet',
                 result
             })
         })
@@ -55,7 +55,7 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        Users.findOneAndUpdate(
+        CategoryPet.findOneAndUpdate(
             { _id : id}, 
                 req.body
             , (error, result) => {
@@ -74,7 +74,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Users.deleteOne(
+        CategoryPet.deleteOne(
             {
                 _id : id
             },
