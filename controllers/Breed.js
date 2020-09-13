@@ -1,12 +1,13 @@
-// Controllers for CategoryPet
-const CategoryPet = require('../models/CategoryPet');
+// Controllers for Breed
+const Breed = require('../models/Breed');
 
 module.exports = {
     getAllData: (req, res) => {
-        CategoryPet.find()
+        Breed.find()
+        .populate({ path:'idCategoryPet'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all data categoryPet',
+                message: 'Get all data Breed',
                 result
             })
         })
@@ -18,8 +19,8 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        CategoryPet.create(
-            req.body
+        Breed.create(
+            req.body,
         )
         .then(result => {
             res.status(200).send({
@@ -35,12 +36,13 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        CategoryPet.findOne({
+        Breed.findOne({
             '_id': id
         })
+        .populate({ path:'idCategoryPet'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data categoryPet',
+                message: 'Get all detail data Breed',
                 result
             })
         })
@@ -53,7 +55,7 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        CategoryPet.findOneAndUpdate({ 
+        Breed.findOneAndUpdate({ 
             '_id' : id
         },req.body)
         .then(result => {
@@ -70,7 +72,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        CategoryPet.deleteOne({
+        Breed.deleteOne({
             '_id' : id
         })
         .then(result => {

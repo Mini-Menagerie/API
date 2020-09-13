@@ -1,4 +1,4 @@
-// Route API Users
+// Route API CategoryPet
 const express = require('express')
 const route = express.Router();
 const {verifyToken} = require('../helpers/token');

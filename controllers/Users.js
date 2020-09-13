@@ -20,19 +20,17 @@ module.exports = {
     createData: (req, res) => {
         Users.create(
             req.body,
-        (error, result) => {
-            if(error){
-                res.send({
-                    message: "error",
-                    error
-                })
-            }
-            else {
-                res.send({
-                    message: "success add user", 
-                    result
-                })
-            }
+        )
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
         })
     },
     detailData: (req, res) => {
@@ -56,40 +54,36 @@ module.exports = {
     updateData: (req,res) => {
         const {id} = req.params;
         Users.findOneAndUpdate(
-            { _id : id}, 
+            { '_id' : id}, 
                 req.body
-            , (error, result) => {
-                if(error){
-                    res.status(400).send({
-                        message: "error"
-                    })
-                }
-                else {
-                    res.status(200).send({
-                        message: "success",
-                    })
-                }
-            }
         )
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Users.deleteOne(
-            {
-                _id : id
-            },
-            (error, result) => {
-                if(error){
-                    res.status(400).send({
-                        message: "error"
-                    })
-                }
-                else {
-                    res.status(200).send({
-                        message: "success"
-                    })
-                }
-            }
-        )
+        Users.deleteOne({
+            '_id' : id
+        })
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
     }
 }
