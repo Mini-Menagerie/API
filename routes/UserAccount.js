@@ -5,12 +5,14 @@ const {verifyToken} = require('../helpers/token');
 
 const {
     detailData,
-    updateData,
+    updateDataEmail,
+    updateDataPassword,
     deleteData
 } = require('../controllers/UserAccount')
 
 route.get('/userAccount/:id', detailData)
-route.put('/userAccount/:id', verifyToken, updateData)
+route.put('/userAccountEmail/:id', verifyToken, updateDataEmail)
+route.put('/userAccountPassword/:id', verifyToken, updateDataPassword)
 route.delete('/userAccount/:id', verifyToken, deleteData)
 
 module.exports = route
