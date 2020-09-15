@@ -19,7 +19,6 @@ module.exports = {
             })
         }
         try {
-            console.log(bearerToken);
             const token = bearerToken.split(" ")[1]
             const decoded = jwt.verify(token, process.env.SECRET_KEY_TOKEN);
             if(decoded){

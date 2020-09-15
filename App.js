@@ -12,6 +12,7 @@ const breedRouter = require('./routes/Breed')
 const categoryPetRouter = require('./routes/CategoryPet')
 const userAccountRouter = require('./routes/UserAccount')
 const adminAccountRouter = require('./routes/AdminAccount')
+const productRouter = require('./routes/Product')
 
 // Set up port
 const port = process.env.PORT;
@@ -33,6 +34,7 @@ app.use('/', breedRouter)
 app.use('/', categoryPetRouter)
 app.use('/', userAccountRouter)
 app.use('/', adminAccountRouter)
+app.use('/', productRouter)
 
 // initialize passport
 app.use(passport.initialize());

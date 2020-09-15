@@ -29,7 +29,6 @@ module.exports = {
                     token,
                     user: dataUser
                 })
-                console.log(token)
             }
         }else {
             res.status(400).send({

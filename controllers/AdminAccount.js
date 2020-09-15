@@ -27,7 +27,6 @@ module.exports = {
                     token,
                     admin: dataAdmin
                 })
-                console.log(token)
             }
         }else {
             res.status(400).send({
