@@ -1,12 +1,12 @@
-// Controllers for Users
-const Users = require('../models/Users');
+// Controllers for CategoryPet
+const CategoryPet = require('../models/CategoryPet');
 
 module.exports = {
     getAllData: (req, res) => {
-        Users.find()
+        CategoryPet.find()
         .then(result => {
             res.status(200).send({
-                message: 'Get all data users',
+                message: 'Get all data categoryPet',
                 result
             })
         })
@@ -17,14 +17,30 @@ module.exports = {
             })
         })
     },
+    createData: (req, res) => {
+        CategoryPet.create(
+            req.body
+        )
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
+    },
     detailData: (req, res) => {
         const {id} = req.params;
-        Users.findOne({
+        CategoryPet.findOne({
             '_id': id
         })
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data users',
+                message: 'Get all detail data categoryPet',
                 result
             })
         })
@@ -37,10 +53,9 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        Users.findOneAndUpdate(
-            { '_id' : id}, 
-                req.body
-        )
+        CategoryPet.findOneAndUpdate({ 
+            '_id' : id
+        },req.body)
         .then(result => {
             res.status(200).send({
                 message: 'success',
@@ -55,7 +70,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Users.deleteOne({
+        CategoryPet.deleteOne({
             '_id' : id
         })
         .then(result => {

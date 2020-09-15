@@ -4,6 +4,13 @@ const app = express();
 require('dotenv').config();
 const db = require('./config/db');
 
+//route
+const userRouter = require('./routes/Users')
+const breedRouter = require('./routes/Breed')
+const categoryPetRouter = require('./routes/CategoryPet')
+const userAccountRouter = require('./routes/UserAccount')
+const adminAccountRouter = require('./routes/AdminAccount')
+
 // Set up port
 const port = process.env.PORT;
 
@@ -18,6 +25,12 @@ db.once('open', () => console.log('we are connected'));
 app.get('/', (req, res) => {
   res.send('Welcome to Web Service Mini Menagerie!')
 })
+
+app.use('/', userRouter)
+app.use('/', breedRouter)
+app.use('/', categoryPetRouter)
+app.use('/', userAccountRouter)
+app.use('/', adminAccountRouter)
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)

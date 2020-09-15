@@ -1,12 +1,13 @@
-// Controllers for Users
-const Users = require('../models/Users');
+// Controllers for Breed
+const Breed = require('../models/Breed');
 
 module.exports = {
     getAllData: (req, res) => {
-        Users.find()
+        Breed.find()
+        .populate({ path:'idCategoryPet'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all data users',
+                message: 'Get all data Breed',
                 result
             })
         })
@@ -17,14 +18,31 @@ module.exports = {
             })
         })
     },
-    detailData: (req, res) => {
-        const {id} = req.params;
-        Users.findOne({
-            '_id': id
-        })
+    createData: (req, res) => {
+        Breed.create(
+            req.body,
+        )
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data users',
+                message: 'success',
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
+    },
+    detailData: (req, res) => {
+        const {id} = req.params;
+        Breed.findOne({
+            '_id': id
+        })
+        .populate({ path:'idCategoryPet'})
+        .then(result => {
+            res.status(200).send({
+                message: 'Get all detail data Breed',
                 result
             })
         })
@@ -37,10 +55,9 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        Users.findOneAndUpdate(
-            { '_id' : id}, 
-                req.body
-        )
+        Breed.findOneAndUpdate({ 
+            '_id' : id
+        },req.body)
         .then(result => {
             res.status(200).send({
                 message: 'success',
@@ -55,7 +72,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Users.deleteOne({
+        Breed.deleteOne({
             '_id' : id
         })
         .then(result => {
