@@ -4,6 +4,7 @@ const route = express.Router();
 const {verifyToken} = require('../helpers/token');
 
 const {
+    login,
     createData,
     detailData,
     updateDataEmail,
@@ -11,6 +12,7 @@ const {
     deleteData
 } = require('../controllers/UserAccount')
 
+route.post('/userAccount/login', login)
 route.post('/userAccount/register', createData)
 route.get('/userAccount/:id', detailData)
 route.put('/userAccountEmail/:id', verifyToken, updateDataEmail)

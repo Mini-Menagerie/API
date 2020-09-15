@@ -2,8 +2,41 @@
 const UserAccount = require('../models/UserAccount');
 const Users = require('../models/Users');
 const bcrypt = require("bcrypt");
+const {createToken} = require('../helpers/token');
 
 module.exports = {
+    login: async(req, res) => {
+        const {email, password} = req.body;
+        const user = await UserAccount.findOne({
+            'email': email
+        }).populate({ path:'idUser'})
+        if(user) {
+            const comparePass = await bcrypt.compare(password, user.password);
+            if(!comparePass){
+                res.status(400).json({
+                    message: 'password tidak benar'
+                })
+            } else {
+                const dataUser = {
+                    id: user._id,
+                    fullName: user.idUser.fullName,
+                    email: user.email
+                }
+                // user login => kasih token
+                const token = createToken(dataUser)
+                res.status(200).json({
+                    message: "Selamat datang",
+                    token,
+                    user: dataUser
+                })
+                console.log(token)
+            }
+        }else {
+            res.status(400).send({
+                message: 'Email not found',
+            })
+        }
+    },
     createData: (req, res) => {
         const {fullName, email, password} = req.body;
         Users.create({
@@ -50,14 +83,39 @@ module.exports = {
         })
         .populate({ path:'idUser'})
         .then(result => {
+            if(result == null ) {
+                res.status(200).send({
+                    message: 'Data not found',
+                    result
+                })
+            }else {
+                res.status(200).send({
+                    message: 'Get all detail data UserAccount',
+                    result
+                })
+            }
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
+    createPassword: (req,res) => {
+        const {id} = req.params;
+        const {email} = req.body;
+        UserAccount.findOneAndUpdate({ 
+            '_id' : id
+        }, {email: email})
+        .then(result => {
             res.status(200).send({
-                message: 'Get all detail data UserAccount',
-                result
+                message: 'success',
             })
         })
         .catch(error => {
             res.status(400).send({
-                message: 'Data not found',
+                message: 'error',
                 error
             })
         })
@@ -80,25 +138,30 @@ module.exports = {
             })
         })
     },
-    updateDataPassword: (req,res) => {
+    updateDataPassword: async (req,res) => {
         const {id} = req.params;
         const {passwordLama, passwordBaru} = req.body;
-        UserAccount.findOne({
+        const user = await UserAccount.findOne({
             '_id': id
         })
-        .then(result => {
-            bcrypt.hash(passwordLama, 10, (error, hashedPassword) => {
-                if(error) {
-                    res.status(400).send({
-                        message: 'error',
-                        error
-                    })
-                }else {
-                    if(hashedPassword == result.password) {
+        if(user){
+            const comparePass = await bcrypt.compare(passwordLama, user.password);
+            if(!comparePass){
+                res.status(400).json({
+                    message: 'password tidak benar'
+                })
+            } else {
+                bcrypt.hash(passwordBaru, 10, (error, hashedPassword) => {
+                    if(error) {
+                        res.status(400).send({
+                            message: 'error',
+                            error
+                        })
+                    }else {
                         UserAccount.findOneAndUpdate({ 
                             '_id' : id
                         },{
-                            password: passwordBaru
+                            password: hashedPassword
                         })
                         .then(() => {
                             res.status(200).send({
@@ -111,32 +174,44 @@ module.exports = {
                                 error
                             })
                         })
-                    }else {
-                        res.status(400).send({
-                            message: 'Password inmatch'
-                        })
                     }
-                }
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'Data not found',
-                error
-            })
-        })
+                })
+            }
+        }
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        UserAccount.deleteOne({
-            '_id' : id
+        UserAccount.findOne({
+            '_id': id
         })
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
+        .then((result) => {
+            Users.deleteOne({
+                '_id' : result.idUser
+            })
+            .then(() => {
+                UserAccount.deleteOne({
+                    '_id' : id
+                })
+                .then(() => {
+                    res.status(200).send({
+                        message: 'success',
+                    })
+                })
+                .catch(error => {
+                    res.status(400).send({
+                        message: 'error',
+                        error
+                    })
+                })
+            })
+            .catch(error => {
+                res.status(400).send({
+                    message: 'error',
+                    error
+                })
             })
         })
-        .catch(error => {
+        .catch((error) => {
             res.status(400).send({
                 message: 'error',
                 error

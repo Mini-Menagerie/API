@@ -1,5 +1,6 @@
 // Model for Users
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate');
 
 const Schema = mongoose.Schema
 
@@ -47,6 +48,8 @@ const userSchema = new Schema({
         type: Number
     }
 }, {timestamps: true})
+
+userSchema.plugin(findOrCreate);
 
 const Users = mongoose.model('users', userSchema);
 
