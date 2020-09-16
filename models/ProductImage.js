@@ -9,9 +9,9 @@ const productImageSchema = new Schema({
         ref: 'product',
         required: true
     },
-    urlImage: [{
+    urlImage: {
         type: String
-    }]
+    }
 }, {timestamps: true})
 
 const ProductImage = mongoose.model('productImage', productImageSchema);

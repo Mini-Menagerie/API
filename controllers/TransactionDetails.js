@@ -1,13 +1,14 @@
-// Controllers for Breed
-const ProductImage = require('../models/ProductImage');
+// Controllers for TransactionDetails
+const TransactionDetails = require('../models/TransactionDetails');
 
 module.exports = {
     getAllData: (req, res) => {
-        ProductImage.find()
+        TransactionDetails.find()
+        .populate('idTransaction')
         .populate('idProduct')
         .then(result => {
             res.status(200).send({
-                message: 'Get all data ProductImage',
+                message: 'Get all data TransactionDetails',
                 result
             })
         })
@@ -20,11 +21,9 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        const {idProduct, urlImage} = req.body;
-        ProductImage.create({
-            idProduct: idProduct,
-            urlImage: urlImage
-        })
+        TransactionDetails.create(
+            req.body
+        )
         .then(result => {
             res.status(200).send({
                 message: 'success',
@@ -39,13 +38,14 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        ProductImage.findOne({
+        TransactionDetails.findOne({
             '_id': id
         })
-        .populate({ path:'idProduct'})
+        .populate('idTransaction')
+        .populate('idProduct')
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data ProductImage',
+                message: 'Get all detail data TransactionDetails',
                 result
             })
         })
@@ -58,9 +58,9 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        ProductImage.findOneAndUpdate({ 
+        TransactionDetails.findOneAndUpdate({ 
             '_id' : id
-        },req,body)
+        },req.body)
         .then(result => {
             res.status(200).send({
                 message: 'Success',
@@ -75,7 +75,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        ProductImage.deleteOne({
+        TransactionDetails.deleteOne({
             '_id' : id
         })
         .then(result => {

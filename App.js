@@ -14,6 +14,8 @@ const userAccountRouter = require('./routes/UserAccount')
 const adminAccountRouter = require('./routes/AdminAccount')
 const productRouter = require('./routes/Product')
 const productImageRouter = require('./routes/ProductImage')
+const transactionRouter = require('./routes/Transaction')
+const transactionDetailsRouter = require('./routes/TransactionDetails')
 
 // Set up port
 const port = process.env.PORT;
@@ -37,6 +39,8 @@ app.use('/', userAccountRouter)
 app.use('/', adminAccountRouter)
 app.use('/', productRouter)
 app.use('/', productImageRouter)
+app.use('/', transactionRouter)
+app.use('/', transactionDetailsRouter)
 
 // initialize passport
 app.use(passport.initialize());

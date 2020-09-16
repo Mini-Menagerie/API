@@ -1,13 +1,13 @@
-// Controllers for Breed
-const ProductImage = require('../models/ProductImage');
+// Controllers for Transaction
+const Transaction = require('../models/Transaction');
 
 module.exports = {
     getAllData: (req, res) => {
-        ProductImage.find()
-        .populate('idProduct')
+        Transaction.find()
+        .populate('idUser')
         .then(result => {
             res.status(200).send({
-                message: 'Get all data ProductImage',
+                message: 'Get all data Transaction',
                 result
             })
         })
@@ -20,10 +20,10 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        const {idProduct, urlImage} = req.body;
-        ProductImage.create({
-            idProduct: idProduct,
-            urlImage: urlImage
+        const {idUser, totalPrice} = req.body;
+        Transaction.create({
+            idUser: idUser,
+            totalPrice: totalPrice
         })
         .then(result => {
             res.status(200).send({
@@ -39,13 +39,13 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        ProductImage.findOne({
+        Transaction.findOne({
             '_id': id
         })
-        .populate({ path:'idProduct'})
+        .populate('idUser')
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data ProductImage',
+                message: 'Get all detail data Transaction',
                 result
             })
         })
@@ -58,9 +58,9 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        ProductImage.findOneAndUpdate({ 
+        Transaction.findOneAndUpdate({ 
             '_id' : id
-        },req,body)
+        },req.body)
         .then(result => {
             res.status(200).send({
                 message: 'Success',
@@ -75,7 +75,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        ProductImage.deleteOne({
+        Transaction.deleteOne({
             '_id' : id
         })
         .then(result => {
