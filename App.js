@@ -21,6 +21,7 @@ const transactionDetailsRouter = require('./routes/TransactionDetails')
 const petRouter = require('./routes/Pet')
 const petUpForAdoptionRouter = require('./routes/PetUpForAdoption')
 const petImageRouter = require('./routes/PetImage')
+const formRequestRouter = require('./routes/FormRequest')
 
 // Set up port
 const port = process.env.PORT;
@@ -49,6 +50,7 @@ app.use('/', transactionDetailsRouter)
 app.use('/', petRouter)
 app.use('/', petUpForAdoptionRouter)
 app.use('/', petImageRouter)
+app.use('/', formRequestRouter)
 
 // initialize passport
 app.use(passport.initialize());
