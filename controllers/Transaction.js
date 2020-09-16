@@ -1,17 +1,18 @@
-// Controllers for Breed
-const Breed = require('../models/Breed');
+// Controllers for Transaction
+const Transaction = require('../models/Transaction');
 
 module.exports = {
     getAllData: (req, res) => {
-        Breed.find()
-        .populate({ path:'idCategoryPet'})
+        Transaction.find()
+        .populate('idUser')
         .then(result => {
             res.status(200).send({
-                message: 'Get all data Breed',
+                message: 'Get all data Transaction',
                 result
             })
         })
         .catch(error => {
+            console.log(error);
             res.status(500).send({
                 message: 'Internal server error',
                 error
@@ -19,9 +20,11 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        Breed.create(
-            req.body,
-        )
+        const {idUser, totalPrice} = req.body;
+        Transaction.create({
+            idUser: idUser,
+            totalPrice: totalPrice
+        })
         .then(result => {
             res.status(200).send({
                 message: 'success',
@@ -36,13 +39,13 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        Breed.findOne({
+        Transaction.findOne({
             '_id': id
         })
-        .populate({ path:'idCategoryPet'})
+        .populate('idUser')
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data Breed',
+                message: 'Get all detail data Transaction',
                 result
             })
         })
@@ -55,12 +58,12 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        Breed.findOneAndUpdate({ 
+        Transaction.findOneAndUpdate({ 
             '_id' : id
         },req.body)
         .then(result => {
             res.status(200).send({
-                message: 'success',
+                message: 'Success',
             })
         })
         .catch(error => {
@@ -72,12 +75,12 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Breed.deleteOne({
+        Transaction.deleteOne({
             '_id' : id
         })
         .then(result => {
             res.status(200).send({
-                message: 'success',
+                message: 'Success',
             })
         })
         .catch(error => {

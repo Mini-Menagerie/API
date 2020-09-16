@@ -1,17 +1,18 @@
 // Controllers for Breed
-const Breed = require('../models/Breed');
+const ProductImage = require('../models/ProductImage');
 
 module.exports = {
     getAllData: (req, res) => {
-        Breed.find()
-        .populate({ path:'idCategoryPet'})
+        ProductImage.find()
+        .populate('idProduct')
         .then(result => {
             res.status(200).send({
-                message: 'Get all data Breed',
+                message: 'Get all data ProductImage',
                 result
             })
         })
         .catch(error => {
+            console.log(error);
             res.status(500).send({
                 message: 'Internal server error',
                 error
@@ -19,9 +20,11 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        Breed.create(
-            req.body,
-        )
+        const {idProduct, urlImage} = req.body;
+        ProductImage.create({
+            idProduct: idProduct,
+            urlImage: urlImage
+        })
         .then(result => {
             res.status(200).send({
                 message: 'success',
@@ -36,13 +39,13 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        Breed.findOne({
+        ProductImage.findOne({
             '_id': id
         })
-        .populate({ path:'idCategoryPet'})
+        .populate({ path:'idProduct'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data Breed',
+                message: 'Get all detail data ProductImage',
                 result
             })
         })
@@ -55,12 +58,12 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        Breed.findOneAndUpdate({ 
+        ProductImage.findOneAndUpdate({ 
             '_id' : id
-        },req.body)
+        },req,body)
         .then(result => {
             res.status(200).send({
-                message: 'success',
+                message: 'Success',
             })
         })
         .catch(error => {
@@ -72,12 +75,12 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        Breed.deleteOne({
+        ProductImage.deleteOne({
             '_id' : id
         })
         .then(result => {
             res.status(200).send({
-                message: 'success',
+                message: 'Success',
             })
         })
         .catch(error => {

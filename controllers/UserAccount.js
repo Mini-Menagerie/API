@@ -29,7 +29,6 @@ module.exports = {
                     token,
                     user: dataUser
                 })
-                console.log(token)
             }
         }else {
             res.status(400).send({
@@ -83,17 +82,10 @@ module.exports = {
         })
         .populate({ path:'idUser'})
         .then(result => {
-            if(result == null ) {
-                res.status(200).send({
-                    message: 'Data not found',
-                    result
-                })
-            }else {
-                res.status(200).send({
-                    message: 'Get all detail data UserAccount',
-                    result
-                })
-            }
+            res.status(200).send({
+                message: 'Get all detail data UserAccount',
+                result
+            })
         })
         .catch(error => {
             res.status(400).send({
