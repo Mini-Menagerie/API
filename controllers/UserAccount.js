@@ -37,42 +37,31 @@ module.exports = {
         }
     },
     createData: (req, res) => {
-        const {fullName, email, password} = req.body;
-        Users.create({
-            fullName: fullName
-        })
-        .then(result => {
-            bcrypt.hash(password, 10, (error, hashedPassword) => {
-                if(error) {
+        const {idUser, email, password} = req.body;
+        bcrypt.hash(password, 10, (error, hashedPassword) => {
+            if(error) {
+                res.status(400).send({
+                    message: 'error',
+                    error
+                })
+            }else {
+                UserAccount.create({
+                    idUser: idUser,
+                    email: email,
+                    password: hashedPassword
+                })
+                .then(() => {
+                    res.status(200).send({
+                        message: 'success',
+                    })
+                })
+                .catch(error => {
                     res.status(400).send({
                         message: 'error',
                         error
                     })
-                }else {
-                    UserAccount.create({
-                        idUser: result.id,
-                        email: email,
-                        password: hashedPassword
-                    })
-                    .then(() => {
-                        res.status(200).send({
-                            message: 'success',
-                        })
-                    })
-                    .catch(error => {
-                        res.status(400).send({
-                            message: 'error',
-                            error
-                        })
-                    })
-                }
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
-            })
+                })
+            }
         })
     },
     detailData: (req, res) => {
