@@ -1,4 +1,5 @@
 const express = require('express');
+var cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config();
@@ -6,6 +7,7 @@ const db = require('./config/db');
 require('./config/strategies').strategies()
 const passport = require('passport');
 
+app.use(cors())
 //route
 const userRouter = require('./routes/Users')
 const breedRouter = require('./routes/Breed')
