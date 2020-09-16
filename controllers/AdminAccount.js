@@ -4,35 +4,42 @@ const bcrypt = require("bcrypt");
 const {createToken} = require('../helpers/token');
 
 module.exports = {
-    login: async(req, res) => {
-        const {email, password} = req.body;
-        const admin = await AdminAccount.findOne({
-            'email': email
-        })
-        if(admin) {
-            const comparePass = await bcrypt.compare(password, admin.password);
-            if(!comparePass){
-                res.status(400).json({
-                    message: 'password tidak benar'
-                })
-            } else {
-                const dataAdmin = {
-                    id: admin._id,
-                    email: admin.email
-                }
-                // user login => kasih token
-                const token = createToken(dataAdmin)
-                res.status(200).json({
-                    message: "Selamat datang",
-                    token,
-                    admin: dataAdmin
-                })
-            }
-        }else {
-            res.status(400).send({
-                message: 'Email not found',
+        login: async(req, res) => {
+            try{
+            const {email, password} = req.body;
+            const admin = await AdminAccount.findOne({
+                'email': email
             })
+            if(admin) {
+                const comparePass = await bcrypt.compare(password, admin.password);
+                if(!comparePass){
+                    res.status(400).json({
+                        message: 'password tidak benar',
+                    })
+                    
+                } else {
+                    const dataAdmin = {
+                        id: admin._id,
+                        email: admin.email
+                    }
+                    // user login => kasih token
+                    const token = createToken(dataAdmin)
+                    res.status(200).json({
+                        message: "Selamat datang",
+                        token,
+                        admin: dataAdmin
+                    })
+                }
+            }else {
+                res.status(500).json({
+                        message: 'password tidak benar',
+                    })
+            }
         }
+        catch(error){
+            console.log(error);
+        }
+    
     },
     getAllData: (req, res) => {
         AdminAccount.find()
