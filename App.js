@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config();
 const db = require('./config/db');
+require('./config/strategies').strategies()
+const passport = require('passport');
 
 //route
 const userRouter = require('./routes/Users')
@@ -31,6 +33,10 @@ app.use('/', breedRouter)
 app.use('/', categoryPetRouter)
 app.use('/', userAccountRouter)
 app.use('/', adminAccountRouter)
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
