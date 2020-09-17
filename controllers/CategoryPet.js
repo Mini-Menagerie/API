@@ -24,6 +24,7 @@ module.exports = {
         .then(result => {
             res.status(200).send({
                 message: 'success',
+                result
             })
         })
         .catch(error => {
@@ -59,6 +60,7 @@ module.exports = {
         .then(result => {
             res.status(200).send({
                 message: 'success',
+                result
             })
         })
         .catch(error => {
@@ -76,6 +78,7 @@ module.exports = {
         .then(result => {
             res.status(200).send({
                 message: 'success',
+                result
             })
         })
         .catch(error => {

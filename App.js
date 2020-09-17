@@ -68,6 +68,18 @@ app.get('/auth/google/callback', passport.authenticate('google'),
 
 // END GOOGLE AUTHENTICATE
 
+// FACEBOOK AUTHENTICATE
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}));
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook'),
+  function(req, res) {
+   res.json({
+       message: 'welcome'
+   })
+  });
+
+// END FACEBOOK AUTHENTICATE
+
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })
