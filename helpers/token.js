@@ -5,9 +5,7 @@ module.exports = {
 
     // middleware untuk generate token
     createToken : (dataUser) => {
-        const token = jwt.sign({...dataUser}, process.env.SECRET_KEY_TOKEN, {
-            expiresIn: '3h'
-        });
+        const token = jwt.sign({...dataUser}, process.env.SECRET_KEY_TOKEN);
         return token;
     },
     
