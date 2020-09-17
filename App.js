@@ -56,6 +56,18 @@ app.use('/', formRequestRouter)
 app.use(passport.initialize());
 app.use(passport.session());
 
+// GOOGLE AUTHENTICATE
+app.get('/auth/google', passport.authenticate('google', {scope: ['email']}));
+
+app.get('/auth/google/callback', passport.authenticate('google'),
+  function(req, res) {
+   res.json({
+       message: 'welcome'
+   })
+  });
+
+// END GOOGLE AUTHENTICATE
+
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })

@@ -5,8 +5,11 @@ const findOrCreate = require('mongoose-findorcreate');
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
+    avatar: {
+        type: String
+    },
     fullName: {
-        type: String,
+        type: String
     },
     noHandhpone: {
         type: String
