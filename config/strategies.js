@@ -5,6 +5,7 @@ const Users = require('../models/Users');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = {
     strategies : () => {
@@ -37,12 +38,59 @@ module.exports = {
 
         passport.use('google', new GoogleStrategy(
             {
-                clientID:process.env.CLIENT_ID,
-                clientSecret:process.env.CLIENT_SECRET,
-                callbackURL:process.env.CALLBACK_URL,
+                clientID:process.env.CLIENT_ID_GOOGLE,
+                clientSecret:process.env.CLIENT_SECRET_GOOGLE,
+                callbackURL:process.env.CALLBACK_URL_GOOGLE,
                 profileFields: ['id', 'displayName', 'photos', 'email']
             },
             (accessToken, refreshToken, profile, callback) => {
+                UserAccount.findOne({
+                    providerId: profile._json.sub
+                }, (err, user) => {
+                    if(err === null) {
+                        UserAccount.findOne({
+                            email: profile._json.email
+                        }, (err, checkEmail) => {
+                            if(err === null) {
+                                Users.create({
+                                    avatar: profile._json.picture
+                                }, (err, avatar) => {
+                                    UserAccount.create({
+                                        providerId: profile._json.sub,
+                                        providerName: profile.provider,
+                                        email: profile._json.email,
+                                        idUser: avatar._id
+                                    }, (err, user) => {
+                                        return callback(err, user);
+                                    })
+                                })
+                            }else {
+                                UserAccount.findOneAndUpdate({
+                                    email: checkEmail.email
+                                }, {
+                                    providerId: profile._json.sub,
+                                    providerName: profile.provider,
+                                }, (err, user) => {
+                                    return callback(err, user);
+                                })
+                            }
+                        })
+                    }else {
+                        return callback(err, user);
+                    }
+                })
+            }
+        ));
+
+        passport.use('facebook', new FacebookStrategy(
+            {
+                clientID:process.env.CLIENT_ID_FACEBOOK,
+                clientSecret:process.env.CLIENT_SECRET_FACEBOOK,
+                callbackURL:process.env.CALLBACK_URL_FACEBOOK,
+                profileFields: ['id', 'displayName', 'photos', 'email']
+            },
+            (accessToken, refreshToken, profile, callback) => {
+                console.log(profile);
                 UserAccount.findOne({
                     providerId: profile._json.sub
                 }, (err, user) => {
