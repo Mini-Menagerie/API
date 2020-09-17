@@ -1,6 +1,5 @@
 // Controllers for FormRequest
 const FormRequest = require('../models/FormRequest');
-const Users = require('../models/Users');
 
 module.exports = {
     getAllData: (req, res) => {
@@ -20,50 +19,15 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        const {
-            reason, 
-            status, 
-            idUser, 
-            work, 
-            workDuration, 
-            houseStatus, 
-            otherPet, 
-            hasGivenPet, 
-            hasChildrenAtHouse, 
-            willPetBeCaged, 
-            salary
-        } = req.body;
-        Users.findOneAndUpdate({ 
-            '_id' : idUser
-        },{
-            work: work,
-            workDuration: workDuration,
-            houseStatus: houseStatus,
-            otherPet: otherPet,
-            hasGivenPet: hasGivenPet,
-            hasChildrenAtHouse: hasChildrenAtHouse,
-            willPetBeCaged: willPetBeCaged,
-            salary: salary
-        })
-        .then((result) => {
-            FormRequest.create({
-                idUser: result.id,
-                reason: reason,
-                status: status
-            })
-            .then(result => {
-                res.status(200).send({
-                    message: 'success',
-                })
-            })
-            .catch(error => {
-                res.status(400).send({
-                    message: 'error',
-                    error
-                })
+        FormRequest.create(
+            req.body,
+        )
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
             })
         })
-        .catch((error) => {
+        .catch(error => {
             res.status(400).send({
                 message: 'error',
                 error
