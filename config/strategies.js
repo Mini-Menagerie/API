@@ -90,9 +90,9 @@ module.exports = {
                 profileFields: ['id', 'displayName', 'photos', 'email']
             },
             (accessToken, refreshToken, profile, callback) => {
-                console.log(profile);
+                console.log(profile._json.picture);
                 UserAccount.findOne({
-                    providerId: profile._json.sub
+                    providerId: profile._json._id
                 }, (err, user) => {
                     if(err === null) {
                         UserAccount.findOne({
@@ -100,10 +100,10 @@ module.exports = {
                         }, (err, checkEmail) => {
                             if(err === null) {
                                 Users.create({
-                                    avatar: profile._json.picture
+                                    avatar: profile._json.picture.data.url
                                 }, (err, avatar) => {
                                     UserAccount.create({
-                                        providerId: profile._json.sub,
+                                        providerId: profile._json._id,
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
