@@ -1,5 +1,6 @@
 // Controllers for PetImage
 const PetImage = require('../models/PetImage');
+const Pet = require('../models/Pet');
 
 module.exports = {
     getAllData: (req, res) => {
@@ -22,10 +23,23 @@ module.exports = {
         PetImage.create(
             req.body,
         )
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-                result
+        .then(() => {
+            Pet.findOneAndUpdate(
+                {_id: req.body.idPet},
+                {$push: {image: data.urlImage}},
+                {new: true}
+            )
+            .then((result) => {
+                res.status(200).send({
+                    message: 'success',
+                    result
+                })
+            })
+            .catch((error) => {
+                res.status(400).send({
+                    message: 'success',
+                    error
+                })
             })
         })
         .catch(error => {
