@@ -17,7 +17,7 @@ const productSchema = new Schema({
         type: String
     },
     image: [{
-        type: String
+        type: Object
     }]
 }, {timestamps: true})
 

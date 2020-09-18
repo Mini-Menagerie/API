@@ -27,7 +27,10 @@ module.exports = {
             })
             const product = await Product.findOneAndUpdate(
                 {_id: req.body.idProduct},
-                {$push: {image: data.urlImage}},
+                {$push: {image:{
+                    id: data._id,
+                    image: data.urlImage
+                }}},
                 {new: true}
             )
             res.status(200).send({
