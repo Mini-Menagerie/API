@@ -4,12 +4,10 @@ const route = express.Router();
 const {verifyToken} = require('../helpers/token');
 
 const {
-    createData,
     detailData,
     updateData
 } = require('../controllers/Users')
 
-route.post('/users/create', createData)
 route.get('/users/:id', detailData)
 route.put('/users/:id', verifyToken, updateData)
 
