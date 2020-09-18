@@ -12,7 +12,7 @@ const {
 } = require('../controllers/TransactionDetails')
 
 route.get('/transactionDetails', getAllData)
-route.post('/transactionDetails/register', verifyToken, createData)
+route.post('/transactionDetails/create', verifyToken, createData)
 route.get('/transactionDetails/:id', detailData)
 route.put('/transactionDetails/:id', verifyToken, updateData)
 route.delete('/transactionDetails/:id', verifyToken, deleteData)

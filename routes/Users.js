@@ -9,7 +9,7 @@ const {
     updateData
 } = require('../controllers/Users')
 
-route.post('/users/register', createData)
+route.post('/users/create', createData)
 route.get('/users/:id', detailData)
 route.put('/users/:id', verifyToken, updateData)
 

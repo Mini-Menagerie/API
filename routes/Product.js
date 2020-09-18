@@ -12,7 +12,7 @@ const {
 } = require('../controllers/Product')
 
 route.get('/product', getAllData)
-route.post('/product/register', verifyToken, createData)
+route.post('/product/create', verifyToken, createData)
 route.get('/product/:id', detailData)
 route.put('/product/:id', verifyToken, updateData)
 route.delete('/product/:id', verifyToken, deleteData)
