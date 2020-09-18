@@ -35,6 +35,9 @@ const petSchema = new Schema({
     about: {
         type: String
     },
+    image: [{
+        type: String
+    }]
 }, {timestamps: true})
 
 const Pet = mongoose.model('pet', petSchema);
