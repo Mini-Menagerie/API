@@ -1,10 +1,11 @@
 // Controllers for Breed
 const ProductImage = require('../models/ProductImage');
+const Product = require('../models/Product');
 
 module.exports = {
     getAllData: (req, res) => {
         ProductImage.find()
-        .populate('idProduct')
+        .populate({path: 'idProduct', select: 'price productName stock'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all data ProductImage',
@@ -19,24 +20,26 @@ module.exports = {
             })
         })
     },
-    createData: (req, res) => {
-        const {idProduct, urlImage} = req.body;
-        ProductImage.create({
-            idProduct: idProduct,
-            urlImage: urlImage
-        })
-        .then(result => {
+    createData: async (req, res) => {
+        try {
+            const data = await ProductImage.create({
+                ...req.body
+            })
+            const product = await Product.findOneAndUpdate(
+                {_id: req.body.idProduct},
+                {$push: {image: data.urlImage}},
+                {new: true}
+            )
             res.status(200).send({
                 message: 'success',
-                result
+                product
             })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
+        } catch(error){
+            console.log(error);
+            res.status(500).json({
+                message: 'internal server error'
             })
-        })
+        }
     },
     detailData: (req, res) => {
         const {id} = req.params;
