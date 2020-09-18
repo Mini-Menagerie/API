@@ -23,6 +23,8 @@ const petUpForAdoptionRouter = require('./routes/PetUpForAdoption')
 const petImageRouter = require('./routes/PetImage')
 const formRequestRouter = require('./routes/FormRequest')
 const petCollectionRouter = require('./routes/PetCollection')
+const listAdoptionTransactionRouter = require('./routes/ListAdoptionTransaction')
+const listProductTransactionRouter = require('./routes/ListProductTransaction')
 
 // Set up port
 const port = process.env.PORT;
@@ -53,6 +55,8 @@ app.use('/', petUpForAdoptionRouter)
 app.use('/', petImageRouter)
 app.use('/', formRequestRouter)
 app.use('/', petCollectionRouter)
+app.use('/', listAdoptionTransactionRouter)
+app.use('/', listProductTransactionRouter)
 
 // initialize passport
 app.use(passport.initialize());
