@@ -37,7 +37,7 @@ module.exports = {
         }
     },
     createData: (req, res) => {
-        const {idUser, email, password} = req.body;
+        const {fullName, email, password} = req.body;
         bcrypt.hash(password, 10, (error, hashedPassword) => {
             if(error) {
                 res.status(400).send({
@@ -45,17 +45,29 @@ module.exports = {
                     error
                 })
             }else {
-                UserAccount.create({
-                    idUser: idUser,
-                    email: email,
-                    password: hashedPassword
+                Users.create({
+                    fullName: fullName
                 })
-                .then(() => {
-                    res.status(200).send({
-                        message: 'success',
+                .then((result) => {
+                    UserAccount.create({
+                        idUser: result._id,
+                        email: email,
+                        password: hashedPassword
+                    })
+                    .then((result) => {
+                        res.status(200).send({
+                            message: 'success',
+                            result
+                        })
+                    })
+                    .catch(error => {
+                        res.status(400).send({
+                            message: 'error',
+                            error
+                        })
                     })
                 })
-                .catch(error => {
+                .catch((error) => {
                     res.status(400).send({
                         message: 'error',
                         error
