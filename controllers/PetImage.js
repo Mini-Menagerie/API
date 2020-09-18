@@ -23,10 +23,10 @@ module.exports = {
         PetImage.create(
             req.body,
         )
-        .then(() => {
+        .then((result) => {
             Pet.findOneAndUpdate(
                 {_id: req.body.idPet},
-                {$push: {image: data.urlImage}},
+                {$push: {image: result.urlImage}},
                 {new: true}
             )
             .then((result) => {
