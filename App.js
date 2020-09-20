@@ -67,9 +67,10 @@ app.get('/auth/google', passport.authenticate('google', {scope: ['email']}));
 
 app.get('/auth/google/callback', passport.authenticate('google'),
   function(req, res) {
-   res.json({
-       message: 'welcome'
-   })
+    res.json({
+        message: 'welcome',
+        user: req.user
+    })
   });
 
 // END GOOGLE AUTHENTICATE
@@ -80,7 +81,8 @@ app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}))
 app.get('/auth/facebook/callback', passport.authenticate('facebook'),
   function(req, res) {
    res.json({
-       message: 'welcome'
+       message: 'welcome',
+       user: req.user
    })
   });
 
