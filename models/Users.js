@@ -11,7 +11,7 @@ const userSchema = new Schema({
     fullName: {
         type: String
     },
-    noHandhpone: {
+    noHandphone: {
         type: String
     },
     country: {
