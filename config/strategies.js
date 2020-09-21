@@ -71,18 +71,18 @@ module.exports = {
                                         .exec((err, user) => {
                                             const dataUser = {
                                                 id: user._id,
-                                                fullName: user.fullName == null ? null : user.fullName,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
                                                 email: user.email,
-                                                avatar: user.avatar == null ? null :user.avatar
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
                                             }
                                             // user login => kasih token
                                             const token = createToken(dataUser);
                                             const data = {
                                                 token,
                                                 id: user._id,
-                                                fullName: user.fullName == null ? null : user.fullName,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
                                                 email: user.email,
-                                                avatar: user.avatar == null ? null :user.avatar
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
                                             }
                                             return callback(err, data);
                                         })
