@@ -23,6 +23,9 @@ const userSchema = new Schema({
     state: {
         type: String
     },
+    zip_code: {
+        type: String
+    },
     detailAddress: {
         type: String
     },
