@@ -63,25 +63,27 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    })
-                                    .populate({ path:'idUser'})
-                                    .exec((err, user) => {
-                                        const dataUser = {
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        // user login => kasih token
-                                        const token = createToken(dataUser);
-                                        const data = {
-                                            token,
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        return callback(err, data);
+                                    }, (err, user) => {
+                                        Users.findOne({
+                                            _id: user.idUser
+                                        }, (err, user) => {
+                                            const dataUser = {
+                                                id: user._id,
+                                                fullName: user.fullName == null ? null : user.fullName,
+                                                email: user.email,
+                                                avatar: user.avatar == null ? null :user.avatar
+                                            }
+                                            // user login => kasih token
+                                            const token = createToken(dataUser);
+                                            const data = {
+                                                token,
+                                                id: user._id,
+                                                fullName: user.fullName == null ? null : user.fullName,
+                                                email: user.email,
+                                                avatar: user.avatar == null ? null :user.avatar
+                                            }
+                                            return callback(err, data);
+                                        })
                                     })
                                 })
                             }else {
@@ -161,25 +163,27 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    })
-                                    .populate({ path:'idUser'})
-                                    .exec((err, user) => {
-                                        const dataUser = {
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        // user login => kasih token
-                                        const token = createToken(dataUser);
-                                        const data = {
-                                            token,
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        return callback(err, data);
+                                    }, (err, user) => {
+                                        Users.findOne({
+                                            _id: user.idUser
+                                        }, (err, user) => {
+                                            const dataUser = {
+                                                id: user._id,
+                                                fullName: user.fullName == null ? null : user.fullName,
+                                                email: user.email,
+                                                avatar: user.avatar == null ? null :user.avatar
+                                            }
+                                            // user login => kasih token
+                                            const token = createToken(dataUser);
+                                            const data = {
+                                                token,
+                                                id: user._id,
+                                                fullName: user.fullName == null ? null : user.fullName,
+                                                email: user.email,
+                                                avatar: user.avatar == null ? null :user.avatar
+                                            }
+                                            return callback(err, data);
+                                        })
                                     })
                                 })
                             }else {
