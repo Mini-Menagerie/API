@@ -77,6 +77,7 @@ module.exports = {
                                             }
                                             // user login => kasih token
                                             const token = createToken(dataUser);
+                                            console.log(token);
                                             const data = {
                                                 token,
                                                 id: user._id,
