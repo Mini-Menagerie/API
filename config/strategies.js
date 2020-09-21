@@ -63,25 +63,30 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    })
-                                    .populate({ path:'idUser'})
-                                    .exec((err, user) => {
-                                        const dataUser = {
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        // user login => kasih token
-                                        const token = createToken(dataUser);
-                                        const data = {
-                                            token,
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        return callback(err, data);
+                                    }, (err, user) => {
+                                        console.log(user);
+                                        UserAccount.findOne({
+                                            _id: user._id
+                                        })
+                                        .populate({ path:'idUser'})
+                                        .exec((err, user) => {
+                                            const dataUser = {
+                                                id: user._id,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                                email: user.email,
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                            }
+                                            // user login => kasih token
+                                            const token = createToken(dataUser);
+                                            const data = {
+                                                token,
+                                                id: user._id,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                                email: user.email,
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                            }
+                                            return callback(err, data);
+                                        })
                                     })
                                 })
                             }else {
@@ -161,25 +166,29 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    })
-                                    .populate({ path:'idUser'})
-                                    .exec((err, user) => {
-                                        const dataUser = {
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        // user login => kasih token
-                                        const token = createToken(dataUser);
-                                        const data = {
-                                            token,
-                                            id: user._id,
-                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
-                                            email: user.email,
-                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
-                                        }
-                                        return callback(err, data);
+                                    }, (err, user) => {
+                                        UserAccount.findOne({
+                                            _id: user._id
+                                        })
+                                        .populate({ path:'idUser'})
+                                        .exec((err, user) => {
+                                            const dataUser = {
+                                                id: user._id,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                                email: user.email,
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                            }
+                                            // user login => kasih token
+                                            const token = createToken(dataUser);
+                                            const data = {
+                                                token,
+                                                id: user._id,
+                                                fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                                email: user.email,
+                                                avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                            }
+                                            return callback(err, data);
+                                        })
                                     })
                                 })
                             }else {
@@ -233,7 +242,7 @@ module.exports = {
         ));
         
         passport.serializeUser(function(user, done) {
-            // console.log(user);
+            console.log(user);
             done(null, user.id);
         });
           
