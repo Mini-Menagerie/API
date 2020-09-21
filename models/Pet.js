@@ -37,7 +37,10 @@ const petSchema = new Schema({
     },
     image: [{
         type: String
-    }]
+    }],
+    fee: {
+        type: String
+    }
 }, {timestamps: true})
 
 const Pet = mongoose.model('pet', petSchema);
