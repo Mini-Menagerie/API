@@ -13,6 +13,6 @@ const {
 route.get('/pet', getAllData)
 route.post('/pet/create', verifyToken, createData)
 route.get('/pet/:id', detailData)
-route.put('/pet/:id', verifyToken, updateData)
+route.put('/pet/:id', updateData)
 
 module.exports = route

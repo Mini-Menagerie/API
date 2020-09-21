@@ -81,8 +81,10 @@ module.exports = {
             })
         })
     },
-    deleteData : (req, res) => {
-        const {id} = req.params;
+    deleteData : async (req, res) => {
+        const {id} = await req.params;
+        const productImage = await ProductImage.findByIdAndDelete({_id: id})
+        console.log(productImage);
         ProductImage.deleteOne({
             '_id' : id
         })

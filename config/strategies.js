@@ -6,6 +6,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const {createToken} = require('../helpers/token');
 
 module.exports = {
     strategies : () => {
@@ -46,12 +47,14 @@ module.exports = {
             (accessToken, refreshToken, profile, callback) => {
                 UserAccount.findOne({
                     providerId: profile._json.sub
-                }, (err, user) => {
-                    if(err === null) {
+                })
+                .populate({ path:'idUser'})
+                .exec((err, user) => {
+                    if(user === null) {
                         UserAccount.findOne({
                             email: profile._json.email
                         }, (err, checkEmail) => {
-                            if(err === null) {
+                            if(checkEmail === null) {
                                 Users.create({
                                     avatar: profile._json.picture
                                 }, (err, avatar) => {
@@ -60,8 +63,25 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    }, (err, user) => {
-                                        return callback(err, user);
+                                    })
+                                    .populate({ path:'idUser'})
+                                    .exec((err, user) => {
+                                        const dataUser = {
+                                            id: user._id,
+                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                            email: user.email,
+                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                        }
+                                        // user login => kasih token
+                                        const token = createToken(dataUser);
+                                        const data = {
+                                            token,
+                                            id: user._id,
+                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                            email: user.email,
+                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                        }
+                                        return callback(err, data);
                                     })
                                 })
                             }else {
@@ -70,13 +90,45 @@ module.exports = {
                                 }, {
                                     providerId: profile._json.sub,
                                     providerName: profile.provider,
-                                }, (err, user) => {
-                                    return callback(err, user);
+                                })
+                                .populate({ path:'idUser'})
+                                .exec((err, user) => {
+                                    const dataUser = {
+                                        id: user._id,
+                                        fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                        email: user.email,
+                                        avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                    }
+                                    // user login => kasih token
+                                    const token = createToken(dataUser);
+                                    const data = {
+                                        token,
+                                        id: user._id,
+                                        fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                        email: user.email,
+                                        avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                    }
+                                    return callback(err, data);
                                 })
                             }
                         })
                     }else {
-                        return callback(err, user);
+                        const dataUser = {
+                            id: user._id,
+                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                            email: user.email,
+                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                        }
+                        // user login => kasih token
+                        const token = createToken(dataUser);
+                        const data = {
+                            token,
+                            id: user._id,
+                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                            email: user.email,
+                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                        }
+                        return callback(err, data);
                     }
                 })
             }
@@ -93,12 +145,14 @@ module.exports = {
                 console.log(profile._json.picture);
                 UserAccount.findOne({
                     providerId: profile._json._id
-                }, (err, user) => {
-                    if(err === null) {
+                })
+                .populate({ path:'idUser'})
+                .exec((err, user) => {
+                    if(user === null) {
                         UserAccount.findOne({
                             email: profile._json.email
                         }, (err, checkEmail) => {
-                            if(err === null) {
+                            if(checkEmail === null) {
                                 Users.create({
                                     avatar: profile._json.picture.data.url
                                 }, (err, avatar) => {
@@ -107,8 +161,25 @@ module.exports = {
                                         providerName: profile.provider,
                                         email: profile._json.email,
                                         idUser: avatar._id
-                                    }, (err, user) => {
-                                        return callback(err, user);
+                                    })
+                                    .populate({ path:'idUser'})
+                                    .exec((err, user) => {
+                                        const dataUser = {
+                                            id: user._id,
+                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                            email: user.email,
+                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                        }
+                                        // user login => kasih token
+                                        const token = createToken(dataUser);
+                                        const data = {
+                                            token,
+                                            id: user._id,
+                                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                            email: user.email,
+                                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                        }
+                                        return callback(err, data);
                                     })
                                 })
                             }else {
@@ -117,19 +188,52 @@ module.exports = {
                                 }, {
                                     providerId: profile._json.sub,
                                     providerName: profile.provider,
-                                }, (err, user) => {
-                                    return callback(err, user);
+                                })
+                                .populate({ path:'idUser'})
+                                .exec((err, user) => {
+                                    const dataUser = {
+                                        id: user._id,
+                                        fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                        email: user.email,
+                                        avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                    }
+                                    // user login => kasih token
+                                    const token = createToken(dataUser);
+                                    const data = {
+                                        token,
+                                        id: user._id,
+                                        fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                                        email: user.email,
+                                        avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                                    }
+                                    return callback(err, data);
                                 })
                             }
                         })
                     }else {
-                        return callback(err, user);
+                        const dataUser = {
+                            id: user._id,
+                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                            email: user.email,
+                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                        }
+                        // user login => kasih token
+                        const token = createToken(dataUser);
+                        const data = {
+                            token,
+                            id: user._id,
+                            fullName: user.idUser.fullName == null ? null : user.idUser.fullName,
+                            email: user.email,
+                            avatar: user.idUser.avatar == null ? null :user.idUser.avatar
+                        }
+                        return callback(err, data);
                     }
                 })
             }
         ));
         
         passport.serializeUser(function(user, done) {
+            // console.log(user);
             done(null, user.id);
         });
           

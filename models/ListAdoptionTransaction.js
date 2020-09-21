@@ -25,7 +25,8 @@ const listAdoptionTransactionSchema = new Schema({
         type: String
     },
     status: {
-        type: String
+        type: String,
+        default: "PENDING"
     }
 }, {timestamps: true})
 
