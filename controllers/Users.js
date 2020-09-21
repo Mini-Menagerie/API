@@ -2,23 +2,6 @@
 const Users = require('../models/Users');
 
 module.exports = {
-    createData: (req, res) => {
-        Users.create(
-            req.body
-        )
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-                result
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
-            })
-        })
-    },
     detailData: (req, res) => {
         const {id} = req.params;
         Users.findOne({

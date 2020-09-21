@@ -1,14 +1,13 @@
-// Controllers for PetImage
-const PetImage = require('../models/PetImage');
-const Pet = require('../models/Pet');
+// Controllers for ListProductTransaction
+const ListProductTransaction = require('../models/ListProductTransaction');
 
 module.exports = {
     getAllData: (req, res) => {
-        PetImage.find()
-        .populate({ path:'idPet'})
+        ListProductTransaction.find()
+        .populate({ path:'idTransaction'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all data PetImage',
+                message: 'Get all data ListProductTransaction',
                 result
             })
         })
@@ -20,26 +19,13 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        PetImage.create(
+        ListProductTransaction.create(
             req.body,
         )
-        .then((result) => {
-            Pet.findOneAndUpdate(
-                {_id: req.body.idPet},
-                {$push: {image: result.urlImage}},
-                {new: true}
-            )
-            .then((result) => {
-                res.status(200).send({
-                    message: 'success',
-                    result
-                })
-            })
-            .catch((error) => {
-                res.status(400).send({
-                    message: 'success',
-                    error
-                })
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+                result
             })
         })
         .catch(error => {
@@ -51,13 +37,13 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        PetImage.findOne({
+        ListProductTransaction.findOne({
             '_id': id
         })
-        .populate({ path:'idPet'})
+        .populate({ path:'idTransaction'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data PetImage',
+                message: 'Get all detail data ListProductTransaction',
                 result
             })
         })
@@ -70,7 +56,7 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        PetImage.findOneAndUpdate({ 
+        ListProductTransaction.findOneAndUpdate({ 
             '_id' : id
         },req.body)
         .then(result => {
@@ -88,7 +74,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        PetImage.deleteOne({
+        ListProductTransaction.deleteOne({
             '_id' : id
         })
         .then(result => {
