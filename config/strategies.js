@@ -64,8 +64,9 @@ module.exports = {
                                         email: profile._json.email,
                                         idUser: avatar._id
                                     }, (err, user) => {
+                                        console.log(user);
                                         UserAccount.findOne({
-                                            _id: user.idUser
+                                            _id: user._id
                                         })
                                         .populate({ path:'idUser'})
                                         .exec((err, user) => {
@@ -77,7 +78,6 @@ module.exports = {
                                             }
                                             // user login => kasih token
                                             const token = createToken(dataUser);
-                                            console.log(token);
                                             const data = {
                                                 token,
                                                 id: user._id,
