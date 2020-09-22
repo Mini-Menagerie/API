@@ -7,12 +7,14 @@ const {
     getAllData,
     createData,
     detailData,
-    updateData
+    updateData,
+    findByCategory
 } = require('../controllers/Pet')
 
 route.get('/pet', getAllData)
 route.post('/pet/create', verifyToken, createData)
 route.get('/pet/:id', detailData)
 route.put('/pet/:id', verifyToken, updateData)
+route.get('/petcategory/', findByCategory)
 
 module.exports = route

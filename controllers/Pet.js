@@ -74,5 +74,26 @@ module.exports = {
                 error
             })
         })
+    },
+    findByCategory : async (req, res) => {
+        try {
+            const result = await Pet.find({
+                gender: {
+                    $regex: req.query.gender,
+                }
+            }).populate('idCategoryPet')
+            if(result){
+                res.status(200).json({
+                    data: result
+                })
+            } else {
+                res.status(400).json({
+                    data: 'not found'
+                })
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 }
