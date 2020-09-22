@@ -8,13 +8,13 @@ const {
     createData,
     detailData,
     updateData,
-    findByCategory
+    findByGender
 } = require('../controllers/Pet')
 
 route.get('/pet', getAllData)
 route.post('/pet/create', verifyToken, createData)
 route.get('/pet/:id', detailData)
 route.put('/pet/:id', verifyToken, updateData)
-route.get('/petcategory/', findByCategory)
+route.get('/petgender/', findByGender)
 
 module.exports = route
