@@ -12,7 +12,7 @@ const {
 } = require('../controllers/FormRequest')
 
 route.get('/formRequest', getAllData)
-route.post('/formRequest/create', verifyToken, createData)
+route.post('/formRequest/create', createData)
 route.get('/formRequest/:id', detailData)
 route.put('/formRequest/:id', verifyToken, updateData)
 route.delete('/formRequest/:id', verifyToken, deleteData)
