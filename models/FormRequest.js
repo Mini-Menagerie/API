@@ -13,7 +13,8 @@ const formRequestSchema = new Schema({
         type: String
     },
     status: {
-        type: String
+        type: String,
+        default: 'PENDING'
     }
 }, {timestamps: true})
 
