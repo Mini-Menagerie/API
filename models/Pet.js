@@ -14,6 +14,10 @@ const petSchema = new Schema({
         ref: 'breed',
         required: true
     },
+    idUser: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
     petName: {
         type: String
     },

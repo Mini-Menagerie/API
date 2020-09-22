@@ -23,6 +23,7 @@ module.exports = {
         Pet.find()
         .populate({ path:'idCategoryPet'})
         .populate({ path:'idBreed'})
+        .populate({ path:'idUser'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all data Pet',
@@ -44,6 +45,7 @@ module.exports = {
         })
         .populate({ path:'idCategoryPet'})
         .populate({ path:'idBreed'})
+        .populate({ path:'idUser'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all detail data Pet',
