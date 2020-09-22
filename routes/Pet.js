@@ -11,6 +11,22 @@ const {
     findByGender,
     findByLocation,
     findDetailPet,
+    filterPet,
+    searchPet
+} = require('../controllers/Pet')
+
+route.get('/pet', getAllData)
+route.post('/pet/create', verifyToken, createData)
+route.get('/pet/filter', filterPet)
+route.get('/pet/search', searchPet)
+route.get('/pet/:id', detailData)
+route.put('/pet/:id', verifyToken, updateData)
+route.get('/petgender/', findByGender)
+route.get('/petlocation/', findByLocation)
+route.get('/petdetail/', findDetailPet)
+
+
+module.exports = route
     searchPetCollection,
     filterPetCollection,
 } = require("../controllers/Pet");

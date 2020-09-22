@@ -167,6 +167,23 @@ module.exports = {
             console.log(error);
         }
     },
+    filterPet: async(req, res) => {
+        const filter = req.query
+        try {
+            console.log(filter)    
+        } catch (error) {
+           console.log(error) 
+        }
+    },
+    searchPet: async(req, res) => {
+        const search = req.query
+        try {
+            console.log(search)   
+        } catch (error) {
+           console.log(error) 
+        }
+    }
+},
     filterPetCollection: async (req, res) => {
         const { size, gender, alphabet } = req.query;
         try {
