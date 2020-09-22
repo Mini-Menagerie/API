@@ -75,7 +75,7 @@ module.exports = {
             })
         })
     },
-    findByCategory : async (req, res) => {
+    findByGender : async (req, res) => {
         try {
             const result = await Pet.find({
                 gender: {
