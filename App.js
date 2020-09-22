@@ -67,10 +67,12 @@ app.get('/auth/google', passport.authenticate('google', {scope: ['email']}));
 
 app.get('/auth/google/callback', passport.authenticate('google'),
   function(req, res) {
-    res.json({
-        message: 'welcome',
-        user: req.user
-    })
+    let data={
+      message: 'welcome',
+      user: req.user
+    }
+  
+    res.redirect('http://localhost:3000/', data)
   });
 
 // END GOOGLE AUTHENTICATE
