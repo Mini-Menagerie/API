@@ -12,7 +12,7 @@ const {
 } = require('../controllers/CategoryPet')
 
 route.get('/categoryPet', getAllData)
-route.post('/categoryPet/register', verifyToken, createData)
+route.post('/categoryPet/create', verifyToken, createData)
 route.get('/categoryPet/:id', detailData)
 route.put('/categoryPet/:id', verifyToken, updateData)
 route.delete('/categoryPet/:id', verifyToken, deleteData)

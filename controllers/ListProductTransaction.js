@@ -1,58 +1,49 @@
-// Controllers for Breed
-const ProductImage = require('../models/ProductImage');
-const Product = require('../models/Product');
+// Controllers for ListProductTransaction
+const ListProductTransaction = require('../models/ListProductTransaction');
 
 module.exports = {
     getAllData: (req, res) => {
-        ProductImage.find()
-        .populate({path: 'idProduct', select: 'price productName stock'})
+        ListProductTransaction.find()
+        .populate({ path:'idTransaction'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all data ProductImage',
+                message: 'Get all data ListProductTransaction',
                 result
             })
         })
         .catch(error => {
-            console.log(error);
             res.status(500).send({
                 message: 'Internal server error',
                 error
             })
         })
     },
-    createData: async (req, res) => {
-        try {
-            const data = await ProductImage.create({
-                ...req.body
-            })
-            const product = await Product.findOneAndUpdate(
-                {_id: req.body.idProduct},
-                {$push: {image:{
-                    id: data._id,
-                    image: data.urlImage
-                }}},
-                {new: true}
-            )
+    createData: (req, res) => {
+        ListProductTransaction.create(
+            req.body,
+        )
+        .then(result => {
             res.status(200).send({
                 message: 'success',
-                product
+                result
             })
-        } catch(error){
-            console.log(error);
-            res.status(500).json({
-                message: 'internal server error'
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
             })
-        }
+        })
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        ProductImage.findOne({
+        ListProductTransaction.findOne({
             '_id': id
         })
-        .populate({ path:'idProduct'})
+        .populate({ path:'idTransaction'})
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data ProductImage',
+                message: 'Get all detail data ListProductTransaction',
                 result
             })
         })
@@ -65,12 +56,12 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        ProductImage.findOneAndUpdate({ 
+        ListProductTransaction.findOneAndUpdate({ 
             '_id' : id
-        },req,body)
+        },req.body)
         .then(result => {
             res.status(200).send({
-                message: 'Success',
+                message: 'success',
                 result
             })
         })
@@ -81,16 +72,14 @@ module.exports = {
             })
         })
     },
-    deleteData : async (req, res) => {
-        const {id} = await req.params;
-        const productImage = await ProductImage.findByIdAndDelete({_id: id})
-        console.log(productImage);
-        ProductImage.deleteOne({
+    deleteData : (req, res) => {
+        const {id} = req.params;
+        ListProductTransaction.deleteOne({
             '_id' : id
         })
         .then(result => {
             res.status(200).send({
-                message: 'Success',
+                message: 'success',
                 result
             })
         })

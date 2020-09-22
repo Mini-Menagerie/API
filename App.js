@@ -22,6 +22,9 @@ const petRouter = require('./routes/Pet')
 const petUpForAdoptionRouter = require('./routes/PetUpForAdoption')
 const petImageRouter = require('./routes/PetImage')
 const formRequestRouter = require('./routes/FormRequest')
+const petCollectionRouter = require('./routes/PetCollection')
+const listAdoptionTransactionRouter = require('./routes/ListAdoptionTransaction')
+const listProductTransactionRouter = require('./routes/ListProductTransaction')
 
 // Set up port
 const port = process.env.PORT;
@@ -51,6 +54,9 @@ app.use('/', petRouter)
 app.use('/', petUpForAdoptionRouter)
 app.use('/', petImageRouter)
 app.use('/', formRequestRouter)
+app.use('/', petCollectionRouter)
+app.use('/', listAdoptionTransactionRouter)
+app.use('/', listProductTransactionRouter)
 
 // initialize passport
 app.use(passport.initialize());
@@ -61,9 +67,10 @@ app.get('/auth/google', passport.authenticate('google', {scope: ['email']}));
 
 app.get('/auth/google/callback', passport.authenticate('google'),
   function(req, res) {
-   res.json({
-       message: 'welcome'
-   })
+    res.json({
+        message: 'welcome',
+        user: req.user
+    })
   });
 
 // END GOOGLE AUTHENTICATE
@@ -74,7 +81,8 @@ app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}))
 app.get('/auth/facebook/callback', passport.authenticate('facebook'),
   function(req, res) {
    res.json({
-       message: 'welcome'
+       message: 'welcome',
+       user: req.user
    })
   });
 

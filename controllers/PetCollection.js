@@ -1,14 +1,18 @@
-// Controllers for PetImage
-const PetImage = require('../models/PetImage');
-const Pet = require('../models/Pet');
+// Controllers for PetCollection
+const PetCollection = require('../models/PetCollection');
 
 module.exports = {
     getAllData: (req, res) => {
-        PetImage.find()
-        .populate({ path:'idPet'})
+        PetCollection.find()
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idCategoryPet'
+            }
+        })
         .then(result => {
             res.status(200).send({
-                message: 'Get all data PetImage',
+                message: 'Get all data PetCollection',
                 result
             })
         })
@@ -20,26 +24,13 @@ module.exports = {
         })
     },
     createData: (req, res) => {
-        PetImage.create(
+        PetCollection.create(
             req.body,
         )
-        .then((result) => {
-            Pet.findOneAndUpdate(
-                {_id: req.body.idPet},
-                {$push: {image: result.urlImage}},
-                {new: true}
-            )
-            .then((result) => {
-                res.status(200).send({
-                    message: 'success',
-                    result
-                })
-            })
-            .catch((error) => {
-                res.status(400).send({
-                    message: 'success',
-                    error
-                })
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+                result
             })
         })
         .catch(error => {
@@ -51,13 +42,42 @@ module.exports = {
     },
     detailData: (req, res) => {
         const {id} = req.params;
-        PetImage.findOne({
+        PetCollection.findOne({
             '_id': id
         })
-        .populate({ path:'idPet'})
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idCategoryPet'
+            }
+        })
         .then(result => {
             res.status(200).send({
-                message: 'Get all detail data PetImage',
+                message: 'Get all detail data PetCollection',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
+    searchCollection: (req, res) => {
+        const {collection} = req.params;
+        PetCollection.find({
+            collectionName : collection
+        })
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idCategoryPet'
+            }
+        })
+        .then(result => {
+            res.status(200).send({
+                message: 'Get all data collectionName',
                 result
             })
         })
@@ -70,7 +90,7 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-        PetImage.findOneAndUpdate({ 
+        PetCollection.findOneAndUpdate({ 
             '_id' : id
         },req.body)
         .then(result => {
@@ -88,7 +108,7 @@ module.exports = {
     },
     deleteData : (req, res) => {
         const {id} = req.params;
-        PetImage.deleteOne({
+        PetCollection.deleteOne({
             '_id' : id
         })
         .then(result => {

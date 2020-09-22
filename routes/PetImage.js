@@ -12,7 +12,7 @@ const {
 } = require('../controllers/PetImage')
 
 route.get('/petImage', getAllData)
-route.post('/petImage/register', verifyToken, createData)
+route.post('/petImage/create', verifyToken, createData)
 route.get('/petImage/:id', detailData)
 route.put('/petImage/:id', verifyToken, updateData)
 route.delete('/petImage/:id', verifyToken, deleteData)

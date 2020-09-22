@@ -11,7 +11,7 @@ const userSchema = new Schema({
     fullName: {
         type: String
     },
-    noHandhpone: {
+    noHandphone: {
         type: String
     },
     country: {
@@ -21,6 +21,9 @@ const userSchema = new Schema({
         type: String
     },
     state: {
+        type: String
+    },
+    zip_code: {
         type: String
     },
     detailAddress: {

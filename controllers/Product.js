@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 module.exports = {
     getAllData: (req, res) => {
-        Product.find()
+        Product.find().populate({path: 'productImage', select: 'urlImage'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all data Product',
