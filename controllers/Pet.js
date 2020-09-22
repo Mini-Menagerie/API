@@ -74,5 +74,78 @@ module.exports = {
                 error
             })
         })
+    },
+    findByGender : async (req, res) => {
+        try {
+            const result = await Pet.find({
+                gender: {
+                    $regex: req.query.gender,
+                }
+            }).populate('idCategoryPet')
+            if(result){
+                res.status(200).json({
+                    data: result
+                })
+            } else {
+                res.status(400).json({
+                    data: 'not found'
+                })
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    },
+    findByLocation : async (req, res) => {
+        try {
+            const result = await Pet.find({
+                location: {
+                    $regex: req.query.location,
+                    $options: 'i',
+                }
+            }).populate('idCategoryPet')
+            if(result){
+                res.status(200).json({
+                    data: result
+                })
+            } else {
+                res.status(400).json({
+                    data: 'not found'
+                })
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    },
+    findDetailPet : async(req, res) => {
+        try {
+            let result = await Pet.find({})
+            .populate('idCategoryPet')
+            .populate('idBreed')
+
+            let detailPet = await result.map(item => {
+                var pet = {
+                    id: item._id,
+                    category: item.idCategoryPet.categoryName,
+                    breed: item.idBreed.breedName,
+                    petName : item.petName,
+                    gender: item.gender,
+                    age:item.age,
+                    weight: item.weight,
+                    size: item.size,
+                    location: item.location,
+                    about: item.about,
+                    image: item.image
+                }
+                return pet
+            })
+            res.status(200).json({
+                detailPet
+            })
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 }
