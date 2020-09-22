@@ -36,22 +36,22 @@ const userSchema = new Schema({
         type: String
     },
     houseStatus: {
-        type: Boolean
+        type: String
     },
     otherPet: {
-        type: Boolean
+        type: String
     },
     hasGivenPet: {
-        type: Boolean
+        type: String
     },
     hasChildrenAtHouse: {
-        type: Boolean
+        type: String
     },
     willPetBeCaged: {
-        type: Boolean
+        type: String
     },
     salary: {
-        type: Number
+        type: String
     }
 }, {timestamps: true})
 

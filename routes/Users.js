@@ -9,6 +9,6 @@ const {
 } = require('../controllers/Users')
 
 route.get('/users/:id', detailData)
-route.put('/users/:id', verifyToken, updateData)
+route.put('/users/:id', updateData)
 
 module.exports = route
