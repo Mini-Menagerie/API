@@ -186,11 +186,19 @@ module.exports = {
         }
     },
     searchPet: async (req, res) => {
+        const { variable } = req.query;
+
         try {
-            const result = await Pet.find({})
+            const result = await Pet.find({
+                $or: [
+                    { petName: { $regex: variable, $options: "i" } },
+                    { location: { $regex: variable, $options: "i" } },
+                ],
+            })
                 .populate("idCategoryPet")
                 .populate("idBreed");
-            res.send(result);
+
+            res.send({ result });
         } catch (error) {
             console.log(error);
         }
