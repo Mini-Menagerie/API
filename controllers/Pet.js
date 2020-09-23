@@ -198,14 +198,22 @@ module.exports = {
     filterPetCollection: async (req, res) => {
         const { size, gender, alphabet } = req.query;
         try {
-            const result = await Pet.find({
-                $or: [{ size: size }, { gender: gender }],
-            })
-                .populate("idCategoryPet")
-                .populate("idBreed")
-                .sort({ petName: alphabet });
+            if (size !== "" || gender !== "" || alphabet !== "") {
+                const result = await Pet.find({
+                    $or: [{ size: size }, { gender: gender }],
+                })
+                    .populate("idCategoryPet")
+                    .populate("idBreed")
+                    .sort({ petName: alphabet });
 
-            res.send({ result });
+                res.send({ result });
+            } else {
+                const result = await Pet.find({})
+                    .populate("idCategoryPet")
+                    .populate("idBreed");
+
+                res.send({ result });
+            }
         } catch (error) {
             console.log(error);
         }
