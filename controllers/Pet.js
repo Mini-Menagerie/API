@@ -118,7 +118,7 @@ module.exports = {
         }
     },
     findDetailPet: async (req, res) => {
-        const { search } = req.query
+        const { search } = req.query;
         try {
             let result = await Pet.find({})
                 .populate("idCategoryPet")
@@ -141,8 +141,14 @@ module.exports = {
                 return pet;
                 // console.log(pet);
             });
-            let firstLetterToUpperCase = search.charAt(0).toUpperCase() + search.slice(1)
-            let data = detailPet.filter((item) => item.category === firstLetterToUpperCase || item.breed === firstLetterToUpperCase || item.location === firstLetterToUpperCase)
+            let firstLetterToUpperCase =
+                search.charAt(0).toUpperCase() + search.slice(1);
+            let data = detailPet.filter(
+                (item) =>
+                    item.category === firstLetterToUpperCase ||
+                    item.breed === firstLetterToUpperCase ||
+                    item.location === firstLetterToUpperCase
+            );
             res.status(200).json({
                 data,
             });
@@ -181,12 +187,10 @@ module.exports = {
     },
     searchPet: async (req, res) => {
         try {
-            const result = await Pet.find({
-            })
-            .populate('idCategoryPet')
-            .populate('idBreed')
-            console.log(result);
-            res.send(result)
+            const result = await Pet.find({})
+                .populate("idCategoryPet")
+                .populate("idBreed");
+            res.send(result);
         } catch (error) {
             console.log(error);
         }
@@ -202,6 +206,70 @@ module.exports = {
                 .sort({ petName: alphabet });
 
             res.send({ result });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    petByCategory: async (req, res) => {
+        const { category } = req.params;
+        try {
+            const result = await Pet.find()
+                .populate({
+                    path: "idCategoryPet",
+                    match: {
+                        categoryName: { $regex: category, $options: "i" },
+                    },
+                })
+                .populate("idBreed");
+
+            const filterBreed = result.filter((item) => {
+                return item.idCategoryPet !== null;
+            });
+
+            res.send({ result: filterBreed });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    filterPetByCategory: async (req, res) => {
+        const { size, gender, alphabet } = req.query;
+        const { category } = req.params;
+
+        try {
+            if (size !== "" || gender !== "" || alphabet !== "") {
+                const result = await Pet.find({
+                    $or: [{ size: size }, { gender: gender }],
+                })
+                    .populate({
+                        path: "idCategoryPet",
+                        match: {
+                            categoryName: { $regex: category, $options: "i" },
+                        },
+                    })
+                    .populate("idBreed")
+                    .sort({ petName: alphabet });
+
+                const filterBreed = result.filter((item) => {
+                    return item.idCategoryPet !== null;
+                });
+
+                res.send({ result: filterBreed });
+            } else {
+                const result = await Pet.find()
+                    .populate({
+                        path: "idCategoryPet",
+                        match: {
+                            categoryName: { $regex: category, $options: "i" },
+                        },
+                    })
+                    .populate("idBreed");
+
+                const filterBreed = result.filter((item) => {
+                    return item.idCategoryPet !== null;
+                });
+
+                res.send({ result: filterBreed });
+            }
         } catch (error) {
             console.log(error);
         }
