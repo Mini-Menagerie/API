@@ -8,10 +8,12 @@ const {
     createData,
     detailData,
     updateData,
-    deleteData
+    deleteData,
+    getBreedBasedOnCategory
 } = require('../controllers/Breed')
 
 route.get('/breed', getAllData)
+route.get('/breed/search', getBreedBasedOnCategory)
 route.post('/breed/create', verifyToken, createData)
 route.get('/breed/:id', detailData)
 route.put('/breed/:id', verifyToken, updateData)

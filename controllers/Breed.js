@@ -89,5 +89,31 @@ module.exports = {
                 error
             })
         })
-    }
+    },
+    getBreedBasedOnCategory: async (req, res) => {
+        const {search} = req.query
+        try {
+            let breed = await Breed.find().populate({ path:'idCategoryPet'})
+            let campurSari = breed.map(pet => {
+                let p = {
+                    id: pet._id,
+                    category: pet.idCategoryPet.categoryName,
+                    breedName: pet.breedName,
+                };
+                return p;
+            });
+            let firstLetterToUpperCase = search.charAt(0).toUpperCase() + search.slice(1)
+            let data = campurSari.filter(item => item.category === firstLetterToUpperCase)
+            res.status(200).json({
+                data,
+            });
+        }
+        catch(error){
+            res.status(500).send({
+                message: 'Internal server error',
+                error
+            })
+        }
+        
+    },
 }
