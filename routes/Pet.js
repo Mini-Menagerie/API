@@ -15,6 +15,8 @@ const {
     searchPet,
     searchPetCollection,
     filterPetCollection,
+    petByCategory,
+    filterPetByCategory,
 } = require("../controllers/Pet");
 
 route.get("/pet", getAllData);
@@ -23,6 +25,8 @@ route.get("/pet/filter", filterPet);
 route.get("/pet/search", searchPet);
 route.get("/pet/breed", searchPetCollection);
 route.get("/pet/breed/filter", filterPetCollection);
+route.get("/pet/breed/:category/filter", filterPetByCategory);
+route.get("/pet/category/:category", petByCategory);
 route.get("/pet/:id", detailData);
 route.put("/pet/:id", verifyToken, updateData);
 route.get("/petgender/", findByGender);
