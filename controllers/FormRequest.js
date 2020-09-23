@@ -18,21 +18,30 @@ module.exports = {
             })
         })
     },
-    createData: (req, res) => {
-        FormRequest.create(
-            req.body,
-        )
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
+    createData: async (req, res) => {
+        try {
+            let form = FormRequest.create(
+                req.body,
+            )
+            if(form){
+                res.status(200).json({
+                    message: 'success',
+                    form
+                })
+            } else {
+                console.log('error')
+                res.status(400).json({
+                    message: 'failed'
+                })
+            }
+
+        }catch(error){
+            console.log(error)
+            res.status(500).json({
+                message: "internal server error",
                 error
             })
-        })
+        }
     },
     detailData: (req, res) => {
         const {id} = req.params;

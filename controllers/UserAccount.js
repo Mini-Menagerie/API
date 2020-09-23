@@ -36,45 +36,55 @@ module.exports = {
             })
         }
     },
-    createData: (req, res) => {
+    createData: async (req, res) => {
         const {fullName, email, password} = req.body;
-        bcrypt.hash(password, 10, (error, hashedPassword) => {
-            if(error) {
-                res.status(400).send({
-                    message: 'error',
-                    error
-                })
-            }else {
-                Users.create({
-                    fullName: fullName
-                })
-                .then((result) => {
-                    UserAccount.create({
-                        idUser: result._id,
-                        email: email,
-                        password: hashedPassword
-                    })
-                    .then((result) => {
-                        res.status(200).send({
-                            message: 'success',
-                            result
-                        })
-                    })
-                    .catch(error => {
-                        res.status(400).send({
-                            message: 'error',
-                            error
-                        })
-                    })
-                })
-                .catch((error) => {
+        const user = await UserAccount.findOne({email: req.body.email})
+       
+        if(user){
+            res.status(400).json({
+                message: 'email sudah digunakan'
+            })
+        } else {
+            await bcrypt.hash(password, 10, (error, hashedPassword) => {
+                if(error) {
+                    console.log(error);
                     res.status(400).send({
                         message: 'error',
                         error
                     })
-                })
-            }
-        })
+                }else {
+                    Users.create({
+                        fullName: fullName
+                    })
+                    .then((result) => {
+                        UserAccount.create({
+                            idUser: result._id,
+                            email: email,
+                            password: hashedPassword
+                        })
+                        .then((result) => {
+                            res.status(200).send({
+                                message: 'success',
+                                result
+                            })
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            res.status(500).send({
+                                message: 'error',
+                                error
+                            })
+                        })
+                    })
+                    .catch((error) => {
+                        res.status(500).send({
+                            message: 'error',
+                            error
+                        })
+                    })
+                }
+            })
+        }
     },
     detailData: (req, res) => {
         const {id} = req.params;

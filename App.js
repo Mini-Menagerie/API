@@ -75,6 +75,7 @@ app.get('/auth/google/callback', passport.authenticate('google'),
     res.redirect('http://localhost:3000/', data)
   });
 
+  
 // END GOOGLE AUTHENTICATE
 
 // FACEBOOK AUTHENTICATE
