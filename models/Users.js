@@ -6,52 +6,67 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema({
     avatar: {
-        type: String
+        type: String,
+        default: 'https://www.popularitas.com/wp-content/uploads/2018/04/user-hero-blue.png'
     },
     fullName: {
         type: String
     },
     noHandphone: {
-        type: String
+        type: String,
+        default: ''
     },
     country: {
-        type: String
+        type: String,
+        default: ''
     },
     province: {
-        type: String
+        type: String,
+        default: ''
     },
     state: {
-        type: String
+        type: String,
+        default: ''
     },
     zip_code: {
-        type: String
+        type: String,
+        default: ''
     },
     detailAddress: {
-        type: String
+        type: String,
+        default: ''
     },
     work: {
-        type: String
+        type: String,
+        default: ''
     },
     workDuration: {
-        type: String
+        type: String,
+        default: ''
     },
     houseStatus: {
-        type: String
+        type: String,
+        default: ''
     },
     otherPet: {
-        type: String
+        type: String,
+        default: ''
     },
     hasGivenPet: {
-        type: String
+        type: String,
+        default: ''
     },
     hasChildrenAtHouse: {
-        type: String
+        type: String,
+        default: ''
     },
     willPetBeCaged: {
-        type: String
+        type: String,
+        default: ''
     },
     salary: {
-        type: String
+        type: String,
+        default: ''
     }
 }, {timestamps: true})
 

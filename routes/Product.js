@@ -8,10 +8,14 @@ const {
     createData,
     detailData,
     updateData,
-    deleteData
+    deleteData,
+    sortProductPriceLowToHigh,
+    sortProductPriceHighToLow
 } = require('../controllers/Product')
 
 route.get('/product', getAllData)
+route.get('/sortProductLowToHigh', sortProductPriceLowToHigh)
+route.get('/sortProductHighToLow', sortProductPriceHighToLow)
 route.post('/product/create', verifyToken, createData)
 route.get('/product/:id', detailData)
 route.put('/product/:id', verifyToken, updateData)

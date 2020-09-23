@@ -118,6 +118,7 @@ module.exports = {
         }
     },
     findDetailPet: async (req, res) => {
+        const { search } = req.query
         try {
             let result = await Pet.find({})
                 .populate("idCategoryPet")
@@ -138,9 +139,12 @@ module.exports = {
                     image: item.image,
                 };
                 return pet;
+                // console.log(pet);
             });
+            let firstLetterToUpperCase = search.charAt(0).toUpperCase() + search.slice(1)
+            let data = detailPet.filter((item) => item.category === firstLetterToUpperCase || item.breed === firstLetterToUpperCase || item.location === firstLetterToUpperCase)
             res.status(200).json({
-                detailPet,
+                data,
             });
         } catch (error) {
             console.log(error);
@@ -176,9 +180,13 @@ module.exports = {
         }
     },
     searchPet: async (req, res) => {
-        const search = req.query;
         try {
-            console.log(search);
+            const result = await Pet.find({
+            })
+            .populate('idCategoryPet')
+            .populate('idBreed')
+            console.log(result);
+            res.send(result)
         } catch (error) {
             console.log(error);
         }
