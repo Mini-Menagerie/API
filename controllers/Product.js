@@ -88,5 +88,43 @@ module.exports = {
                 error
             })
         })
-    }
+    },
+    sortProductPriceLowToHigh: async (req, res) => {
+        let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
+            let resultmap = pr.map(item => {
+                let t = {
+                    image: item.image,
+                    _id: item._id,
+                    productName: item.productName,
+                    categories: item.categories,
+                    price : parseInt(item.price),
+                    stock: parseInt(item.stock),
+                }
+                return t
+            })
+            let sorted = resultmap.sort((a,b) => a.price - b.price)
+            res.status(200).send({
+                message: 'Get all data Product',
+                sorted
+            })
+        },
+        sortProductPriceHighToLow: async (req, res) => {
+            let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
+                let resultmap = pr.map(item => {
+                    let t = {
+                        image: item.image,
+                        _id: item._id,
+                        productName: item.productName,
+                        categories: item.categories,
+                        price : parseInt(item.price),
+                        stock: parseInt(item.stock),
+                    }
+                    return t
+                })
+                let sorted = resultmap.sort((a,b) => b.price - a.price)
+                res.status(200).send({
+                    message: 'Get all data Product',
+                    sorted
+                })
+            }
 }
