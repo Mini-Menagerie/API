@@ -42,6 +42,7 @@ module.exports = {
         })
             .populate({ path: "idCategoryPet" })
             .populate({ path: "idBreed" })
+            .populate({ path: 'idUser'})
             .then((result) => {
                 res.status(200).send({
                     message: "Get all detail data Pet",
@@ -122,7 +123,8 @@ module.exports = {
         try {
             let result = await Pet.find({})
                 .populate("idCategoryPet")
-                .populate("idBreed");
+                .populate("idBreed")
+                .populate('idUser')
 
             let detailPet = await result.map((item) => {
                 var pet = {
