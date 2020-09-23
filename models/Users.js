@@ -7,7 +7,7 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     avatar: {
         type: String,
-        default: 'https://www.popularitas.com/wp-content/uploads/2018/04/user-hero-blue.png'
+        default: 'https://cdn.iconscout.com/icon/free/png-512/avatar-372-456324.png'
     },
     fullName: {
         type: String
