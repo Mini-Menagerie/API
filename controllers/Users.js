@@ -22,9 +22,15 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
+        for (let key in req.body) {
+            if (req.body[key] === "") {
+                delete req.body[key];
+            }
+       }
         Users.findOneAndUpdate(
+            
             { '_id' : id}, 
-                req.body
+                {...req.body}
         )
         .then(result => {
             res.status(200).send({
