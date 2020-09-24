@@ -24,6 +24,7 @@ module.exports = {
             } else {
                 const dataUser = {
                     id: user._id,
+                    idUser: user.idUser,
                     fullName: user.idUser.fullName,
                     email: user.email
                 }
