@@ -11,6 +11,11 @@ module.exports = {
             'email': email
         }).populate({ path:'idUser'})
         if(user) {
+            if(user.providerName === 'google'){
+                res.status(404).json({
+                    message: 'Sudah terdaftar Social Media Account'
+                })
+            }
             const comparePass = await bcrypt.compare(password, user.password);
             if(!comparePass){
                 res.status(400).json({
@@ -19,6 +24,7 @@ module.exports = {
             } else {
                 const dataUser = {
                     id: user._id,
+                    idUser: user.idUser._id,
                     fullName: user.idUser.fullName,
                     email: user.email
                 }
@@ -41,6 +47,11 @@ module.exports = {
         const user = await UserAccount.findOne({email: req.body.email})
        
         if(user){
+            if(user.providerName === 'google'){
+                res.status(404).json({
+                    message: 'Sudah terdaftar Social Media Account'
+                })
+            }
             res.status(400).json({
                 message: 'email sudah digunakan'
             })
