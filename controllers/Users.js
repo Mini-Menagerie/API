@@ -22,6 +22,8 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
+        console.log(req.body)
+        console.log(id)
         Users.findOneAndUpdate(
             { '_id' : id}, 
                 req.body
