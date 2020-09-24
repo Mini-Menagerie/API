@@ -42,7 +42,7 @@ module.exports = {
         })
             .populate({ path: "idCategoryPet" })
             .populate({ path: "idBreed" })
-            .populate({ path: 'idUser'})
+            .populate({ path: "idUser" })
             .then((result) => {
                 res.status(200).send({
                     message: "Get all detail data Pet",
@@ -119,14 +119,23 @@ module.exports = {
         }
     },
     findDetailPet: async (req, res) => {
-        const { search } = req.query;
+        const { search, category } = req.query;
         try {
             let result = await Pet.find({})
-                .populate("idCategoryPet")
+                .populate({
+                    path: "idCategoryPet",
+                    match: {
+                        categoryName: { $regex: category, $options: "i" },
+                    },
+                })
                 .populate("idBreed")
-                .populate('idUser')
+                .populate("idUser");
 
-            let detailPet = await result.map((item) => {
+            const petCategory = result.filter((item) => {
+                return item.idCategoryPet !== null;
+            });
+
+            let detailPet = await petCategory.map((item) => {
                 var pet = {
                     id: item._id,
                     category: item.idCategoryPet.categoryName,
@@ -143,6 +152,7 @@ module.exports = {
                 return pet;
                 // console.log(pet);
             });
+
             let firstLetterToUpperCase =
                 search.charAt(0).toUpperCase() + search.slice(1);
             let data = detailPet.filter(
@@ -190,6 +200,8 @@ module.exports = {
     searchPet: async (req, res) => {
         const { variable } = req.query;
 
+        console.log(variable);
+
         try {
             const result = await Pet.find({
                 $or: [
@@ -199,6 +211,12 @@ module.exports = {
             })
                 .populate("idCategoryPet")
                 .populate("idBreed");
+
+            console.log(result);
+
+            const filterBreed = result.filter((item) => {
+                return item.idCategoryPet !== null || item.idBreed !== null;
+            });
 
             res.send({ result });
         } catch (error) {
