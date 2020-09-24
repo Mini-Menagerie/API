@@ -7,6 +7,7 @@ const {
     getAllData,
     createData,
     detailData,
+    historyPurchase,
     updateData,
     deleteData
 } = require('../controllers/TransactionDetails')
@@ -14,6 +15,7 @@ const {
 route.get('/transactionDetails', getAllData)
 route.post('/transactionDetails/create', verifyToken, createData)
 route.get('/transactionDetails/:id', detailData)
+route.get('/transactionDetails/history/:id', historyPurchase)
 route.put('/transactionDetails/:id', verifyToken, updateData)
 route.delete('/transactionDetails/:id', verifyToken, deleteData)
 

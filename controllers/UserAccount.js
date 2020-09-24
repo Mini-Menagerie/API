@@ -24,7 +24,7 @@ module.exports = {
             } else {
                 const dataUser = {
                     id: user._id,
-                    idUser: user.idUser._id,
+                    idUser: user.idUser,
                     fullName: user.idUser.fullName,
                     email: user.email
                 }
@@ -41,6 +41,39 @@ module.exports = {
                 message: 'Email not found',
             })
         }
+    },
+    getAllData: (req, res) => {
+        UserAccount.find()
+        .populate({ path:'idUser'})
+        .then(result => {
+            res.status(200).send({
+                message: 'Get all data UserAccount',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(500).send({
+                message: 'Internal server error',
+                error
+            })
+        })
+    },
+    createData: (req, res) => {
+        Breed.create(
+            req.body,
+        )
+        .then(result => {
+            res.status(200).send({
+                message: 'success',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
     },
     createData: async (req, res) => {
         const {fullName, email, password} = req.body;
