@@ -14,7 +14,7 @@ const formRequestSchema = new Schema({
     },
     status: {
         type: String,
-        default: 'PENDING'
+        default: 'Awaiting Approval'
     }
 }, {timestamps: true})
 
