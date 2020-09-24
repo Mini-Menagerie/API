@@ -58,23 +58,6 @@ module.exports = {
             })
         })
     },
-    createData: (req, res) => {
-        Breed.create(
-            req.body,
-        )
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-                result
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
-            })
-        })
-    },
     createData: async (req, res) => {
         const {fullName, email, password} = req.body;
         const user = await UserAccount.findOne({email: req.body.email})
@@ -151,21 +134,31 @@ module.exports = {
     },
     createPassword: (req,res) => {
         const {id} = req.params;
-        const {email} = req.body;
-        UserAccount.findOneAndUpdate({ 
-            '_id' : id
-        }, {email: email})
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-                result
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
-            })
+        const {password} = req.body;
+        bcrypt.hash(password, 10, (error, hashedPassword) => {
+            if(error) {
+                console.log(error);
+                res.status(400).send({
+                    message: 'error',
+                    error
+                })
+            }else {
+                UserAccount.findOneAndUpdate({ 
+                    '_id' : id
+                }, {password: hashedPassword})
+                .then(result => {
+                    res.status(200).send({
+                        message: 'success',
+                        result
+                    })
+                })
+                .catch(error => {
+                    res.status(400).send({
+                        message: 'error',
+                        error
+                    })
+                })
+            }
         })
     },
     updateDataEmail: (req,res) => {
