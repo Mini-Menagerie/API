@@ -63,7 +63,7 @@ module.exports = {
         const user = await UserAccount.findOne({email: req.body.email})
        
         if(user){
-            if(user.providerName === 'google'){
+            if(user.providerName === 'google' || user.providerName === 'facebook'){
                 res.status(404).json({
                     message: 'Sudah terdaftar Social Media Account'
                 })
