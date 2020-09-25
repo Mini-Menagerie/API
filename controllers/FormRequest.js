@@ -5,6 +5,7 @@ module.exports = {
     getAllData: (req, res) => {
         FormRequest.find()
         .populate({ path:'idUser'})
+        .populate({ path:'idPet'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all data FormRequest',
@@ -49,6 +50,7 @@ module.exports = {
             '_id': id
         })
         .populate({ path:'idUser'})
+        .populate({ path:'idPet'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all detail data FormRequest',
@@ -71,6 +73,7 @@ module.exports = {
                 _id: id
             }
         })
+        .populate({ path:'idPet'})
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;

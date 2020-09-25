@@ -9,6 +9,11 @@ const formRequestSchema = new Schema({
         ref: 'users',
         required: true
     },
+    idPet: {
+        type: Schema.Types.ObjectId,
+        ref: 'pet',
+        required: true
+    },
     reason: {
         type: String
     },
