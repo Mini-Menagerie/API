@@ -5,6 +5,7 @@ const {verifyToken} = require('../helpers/token');
 
 const {
     getAllData,
+    getAllHistory,
     createData,
     detailData,
     updateData,
@@ -14,6 +15,7 @@ const {
 } = require('../controllers/ListAdoptionTransaction')
 
 route.get('/listAdoptionTransaction', getAllData)
+route.get('/listAdoptionTransaction/history/:id', getAllHistory)
 route.post('/listAdoptionTransaction/create', verifyToken, createData)
 route.get('/listAdoptionTransaction/:id', detailData)
 route.put('/listAdoptionTransaction/:id', verifyToken, updateData)
