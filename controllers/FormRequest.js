@@ -62,6 +62,25 @@ module.exports = {
             })
         })
     },
+    allReqData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.find({
+            '_id': id
+        })
+        .populate({ path:'idUser'})
+        .then(result => {
+            res.status(200).send({
+                message: 'Get all detail data FormRequest',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
     updateData: (req,res) => {
         const {id} = req.params;
         FormRequest.findOneAndUpdate({ 
