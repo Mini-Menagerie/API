@@ -24,7 +24,7 @@ module.exports = {
             } else {
                 const dataUser = {
                     id: user._id,
-                    idUser: user.idUser._id,
+                    idUser: user.idUser,
                     fullName: user.idUser.fullName,
                     email: user.email
                 }
@@ -42,12 +42,28 @@ module.exports = {
             })
         }
     },
+    getAllData: (req, res) => {
+        UserAccount.find()
+        .populate({ path:'idUser'})
+        .then(result => {
+            res.status(200).send({
+                message: 'Get all data UserAccount',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(500).send({
+                message: 'Internal server error',
+                error
+            })
+        })
+    },
     createData: async (req, res) => {
         const {fullName, email, password} = req.body;
         const user = await UserAccount.findOne({email: req.body.email})
        
         if(user){
-            if(user.providerName === 'google'){
+            if(user.providerName === 'google' || user.providerName === 'facebook'){
                 res.status(404).json({
                     message: 'Sudah terdaftar Social Media Account'
                 })
@@ -118,21 +134,31 @@ module.exports = {
     },
     createPassword: (req,res) => {
         const {id} = req.params;
-        const {email} = req.body;
-        UserAccount.findOneAndUpdate({ 
-            '_id' : id
-        }, {email: email})
-        .then(result => {
-            res.status(200).send({
-                message: 'success',
-                result
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                message: 'error',
-                error
-            })
+        const {password} = req.body;
+        bcrypt.hash(password, 10, (error, hashedPassword) => {
+            if(error) {
+                console.log(error);
+                res.status(400).send({
+                    message: 'error',
+                    error
+                })
+            }else {
+                UserAccount.findOneAndUpdate({ 
+                    '_id' : id
+                }, {password: hashedPassword})
+                .then(result => {
+                    res.status(200).send({
+                        message: 'success',
+                        result
+                    })
+                })
+                .catch(error => {
+                    res.status(400).send({
+                        message: 'error',
+                        error
+                    })
+                })
+            }
         })
     },
     updateDataEmail: (req,res) => {

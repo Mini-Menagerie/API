@@ -57,6 +57,32 @@ module.exports = {
             })
         })
     },
+    historyPurchase: (req, res) => {
+        const {id} = req.params;
+        TransactionDetails.find()
+        .populate({
+            path:'idTransaction',
+            match: {
+                idUser: id
+            },
+            populate: {
+                path: 'idUser'
+            }
+        })
+        .populate('idProduct')
+        .then(result => {
+            res.status(200).send({
+                message: 'History Purchase',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
     updateData: (req,res) => {
         const {id} = req.params;
         TransactionDetails.findOneAndUpdate({ 
