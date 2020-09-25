@@ -64,14 +64,23 @@ module.exports = {
     },
     allReqData: (req, res) => {
         const {id} = req.params;
-        FormRequest.find({
-            '_id': id
+        FormRequest.find()
+        .populate({ 
+            path:'idUser',
+            match: {
+                _id: id
+            }
         })
-        .populate({ path:'idUser'})
         .then(result => {
+            const filterReq = result.filter((item) => {
+                return item.idUser !== null;
+            });
+            console.log(filterReq)
+
+
             res.status(200).send({
-                message: 'Get all detail data FormRequest',
-                result
+                message: 'Get all data based by id',
+                filterReq: filterReq
             })
         })
         .catch(error => {
