@@ -18,6 +18,35 @@ module.exports = {
         });
       });
   },
+  getAllHistory: (req, res) => {
+      const {id} = req.params;
+      ListAdoptionTransaction.find()
+      .populate({ 
+        path: "idPetUpForAdoption",
+        match: {
+            idUser: id
+        },
+        populate: {
+            path: 'idUser'
+        }
+      })
+      .then(result => {
+          const filterHistory = result.filter((item) => {
+              return item.idUser !== null;
+          });
+
+          res.status(200).send({
+              message: 'Get all data history adoption based by id',
+              filterReq: filterHistory
+          })
+      })
+      .catch(error => {
+          res.status(400).send({
+              message: 'Error',
+              error
+          })
+      })
+  },
   createData: (req, res) => {
     ListAdoptionTransaction.create(req.body)
       .then((result) => {
