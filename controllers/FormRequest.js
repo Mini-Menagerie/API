@@ -62,6 +62,34 @@ module.exports = {
             })
         })
     },
+    allReqData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.find()
+        .populate({ 
+            path:'idUser',
+            match: {
+                _id: id
+            }
+        })
+        .then(result => {
+            const filterReq = result.filter((item) => {
+                return item.idUser !== null;
+            });
+            console.log(filterReq)
+
+
+            res.status(200).send({
+                message: 'Get all data based by id',
+                filterReq: filterReq
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
     updateData: (req,res) => {
         const {id} = req.params;
         FormRequest.findOneAndUpdate({ 
