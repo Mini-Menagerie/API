@@ -71,9 +71,13 @@ module.exports = {
         })
         .populate('idProduct')
         .then(result => {
+            const filterHistory = result.filter((item) => {
+                return item.idUser !== null;
+            });
+
             res.status(200).send({
                 message: 'History Purchase',
-                result
+                filterHistory: filterHistory
             })
         })
         .catch(error => {

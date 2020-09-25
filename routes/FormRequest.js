@@ -7,6 +7,7 @@ const {
     getAllData,
     createData,
     detailData,
+    allReqData,
     updateData,
     deleteData
 } = require('../controllers/FormRequest')
@@ -14,6 +15,7 @@ const {
 route.get('/formRequest', getAllData)
 route.post('/formRequest/create', createData)
 route.get('/formRequest/:id', detailData)
+route.get('/formRequest/all/:id', allReqData)
 route.put('/formRequest/:id', verifyToken, updateData)
 route.delete('/formRequest/:id', verifyToken, deleteData)
 
