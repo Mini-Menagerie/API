@@ -122,20 +122,11 @@ module.exports = {
         const { search, category } = req.query;
         try {
             let result = await Pet.find({})
-                .populate({
-                    path: "idCategoryPet",
-                    match: {
-                        categoryName: { $regex: category, $options: "i" },
-                    },
-                })
+                .populate("idCategoryPet")
                 .populate("idBreed")
                 .populate("idUser");
 
-            const petCategory = result.filter((item) => {
-                return item.idCategoryPet !== null;
-            });
-
-            let detailPet = await petCategory.map((item) => {
+            let detailPet = await result.map((item) => {
                 var pet = {
                     id: item._id,
                     category: item.idCategoryPet.categoryName,
@@ -302,6 +293,48 @@ module.exports = {
 
                 const filterBreed = result.filter((item) => {
                     return item.idCategoryPet !== null;
+                });
+
+                res.send({ result: filterBreed });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    filterPetByCategoryBreed: async (req, res) => {
+        const { size, gender, alphabet } = req.query;
+        const { breed } = req.params;
+
+        try {
+            if (size !== "" || gender !== "" || alphabet !== "") {
+                const result = await Pet.find({
+                    $or: [{ size: size }, { gender: gender }],
+                })
+                    .populate("idCategoryPet")
+                    .populate({
+                        path: "idBreed",
+                        match: {
+                            breedName: { $regex: breed, $options: "i" },
+                        },
+                    });
+
+                const filterBreed = result.filter((item) => {
+                    return item.idBreed !== null;
+                });
+
+                res.send({ result: filterBreed });
+            } else {
+                const result = await Pet.find()
+                    .populate("idCategoryPet")
+                    .populate({
+                        path: "idBreed",
+                        match: {
+                            breedName: { $regex: breed, $options: "i" },
+                        },
+                    });
+
+                const filterBreed = result.filter((item) => {
+                    return item.idBreed !== null;
                 });
 
                 res.send({ result: filterBreed });
