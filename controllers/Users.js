@@ -22,16 +22,11 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
-<<<<<<< HEAD
-        console.log(req.body)
-        console.log(id)
-=======
         for (let key in req.body) {
             if (req.body[key] === "") {
                 delete req.body[key];
             }
        }
->>>>>>> 5565e29f7cdb2e68fbbb08ada69dcd82475b4f39
         Users.findOneAndUpdate(
             
             { '_id' : id}, 
