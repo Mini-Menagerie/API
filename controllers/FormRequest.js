@@ -73,7 +73,12 @@ module.exports = {
                 _id: id
             }
         })
-        .populate({ path:'idPet'})
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idBreed'
+            }
+        })
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
