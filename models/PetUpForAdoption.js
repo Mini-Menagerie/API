@@ -18,7 +18,8 @@ const petUpForAdoptionSchema = new Schema({
         type: Number
     },
     status: {
-        type: String
+        type: String,
+        default: 'Available'
     }
 }, {timestamps: true})
 
