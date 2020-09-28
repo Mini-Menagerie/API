@@ -98,6 +98,114 @@ module.exports = {
             })
         })
     },
+    allApproveData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.find({
+            status: 'Approved'
+        })
+        .populate({ 
+            path:'idUser',
+            match: {
+                _id: id
+            }
+        })
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idBreed'
+            }
+        })
+        .then(result => {
+            const filterReq = result.filter((item) => {
+                return item.idUser !== null;
+            });
+            console.log(filterReq)
+
+
+            res.status(200).send({
+                message: 'Get all data based by id',
+                filterReq: filterReq
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
+    allRejectData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.find({
+            status: 'Rejected'
+        })
+        .populate({ 
+            path:'idUser',
+            match: {
+                _id: id
+            }
+        })
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idBreed'
+            }
+        })
+        .then(result => {
+            const filterReq = result.filter((item) => {
+                return item.idUser !== null;
+            });
+            console.log(filterReq)
+
+
+            res.status(200).send({
+                message: 'Get all data based by id',
+                filterReq: filterReq
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
+    allCompleteData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.find({
+            status: 'Completed'
+        })
+        .populate({ 
+            path:'idUser',
+            match: {
+                _id: id
+            }
+        })
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idBreed'
+            }
+        })
+        .then(result => {
+            const filterReq = result.filter((item) => {
+                return item.idUser !== null;
+            });
+            console.log(filterReq)
+
+
+            res.status(200).send({
+                message: 'Get all data based by id',
+                filterReq: filterReq
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
     updateData: (req,res) => {
         const {id} = req.params;
         FormRequest.findOneAndUpdate({ 
@@ -106,6 +214,66 @@ module.exports = {
         .then(result => {
             res.status(200).send({
                 message: 'success',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
+    },
+    approveData: (req,res) => {
+        const {id} = req.params;
+        FormRequest.findOneAndUpdate({ 
+            '_id' : id
+        }, {
+            status: 'Approved'
+        })
+        .then(result => {
+            res.status(200).send({
+                message: 'Approved',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
+    },
+    rejectData: (req,res) => {
+        const {id} = req.params;
+        FormRequest.findOneAndUpdate({ 
+            '_id' : id
+        }, {
+            status: 'Rejected'
+        })
+        .then(result => {
+            res.status(200).send({
+                message: 'Rejected',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(400).send({
+                message: 'error',
+                error
+            })
+        })
+    },
+    completeData: (req,res) => {
+        const {id} = req.params;
+        FormRequest.findOneAndUpdate({ 
+            '_id' : id
+        }, {
+            status: 'Completed'
+        })
+        .then(result => {
+            res.status(200).send({
+                message: 'Completed',
                 result
             })
         })
