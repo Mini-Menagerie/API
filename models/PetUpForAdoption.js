@@ -4,6 +4,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const petUpForAdoptionSchema = new Schema({
+    idRequest: {
+        type: Schema.Types.ObjectId,
+        ref: 'formRequest',
+        required: true
+    },
     idUser: {
         type: Schema.Types.ObjectId,
         ref: 'users',
