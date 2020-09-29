@@ -9,11 +9,11 @@ const transactionDetailsSchema = new Schema({
         ref: 'transaction',
         required: true
     },
-    idProduct: {
+    idProduct: [{
         type: Schema.Types.ObjectId,
         ref: 'product',
         required: true
-    },
+    }],
 }, {timestamps: true})
 
 const TransactionDetails = mongoose.model('transactionDetails', transactionDetailsSchema);
