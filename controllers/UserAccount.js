@@ -186,8 +186,11 @@ module.exports = {
         const user = await UserAccount.findOne({
             '_id': id
         })
+        console.log(passwordBaru)
         if(user){
             const comparePass = await bcrypt.compare(passwordLama, user.password);
+            console.log(passwordLama);
+            console.log(user.password);
             if(!comparePass){
                 res.status(400).json({
                     message: 'password tidak benar'

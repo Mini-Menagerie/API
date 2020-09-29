@@ -18,7 +18,7 @@ route.get('/userAccount', getAllData)
 route.post('/userAccount/register', createData)
 route.get('/userAccount/:id', detailData)
 route.put('/userAccountEmail/:id', updateDataEmail)
-route.put('/userAccountPassword/:id', verifyToken, updateDataPassword)
+route.put('/userAccountPassword/:id', updateDataPassword)
 route.delete('/userAccount/:id', verifyToken, deleteData)
 
 module.exports = route
