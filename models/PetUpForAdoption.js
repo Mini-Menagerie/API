@@ -7,7 +7,7 @@ const petUpForAdoptionSchema = new Schema({
     idRequest: {
         type: Schema.Types.ObjectId,
         ref: 'formRequest',
-        required: true
+        required: false
     },
     idUser: {
         type: Schema.Types.ObjectId,
