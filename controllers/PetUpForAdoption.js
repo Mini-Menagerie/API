@@ -8,6 +8,7 @@ module.exports = {
         PetUpForAdoption.find()
         .populate({ path:'idUser'})
         .populate({ path:'idPet'})
+        .populate({ path:'idRequest'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all data PetUpForAdoption',
@@ -45,6 +46,7 @@ module.exports = {
         })
         .populate({ path:'idUser'})
         .populate({ path:'idPet'})
+        .populate({ path:'idRequest'})
         .then(result => {
             res.status(200).send({
                 message: 'Get all detail data PetUpForAdoption',
@@ -73,6 +75,7 @@ module.exports = {
                 path: 'idBreed'
             }
         })
+        .populate({ path:'idRequest'})
         .then(result => {
             const filterPetUp = result.filter((item) => {
                 return item.idUser !== null;
@@ -108,6 +111,7 @@ module.exports = {
                 path: 'idBreed'
             }
         })
+        .populate({ path:'idRequest'})
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
@@ -144,6 +148,7 @@ module.exports = {
                 path: 'idBreed'
             }
         })
+        .populate({ path:'idRequest'})
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
@@ -180,6 +185,7 @@ module.exports = {
                 path: 'idBreed'
             }
         })
+        .populate({ path:'idRequest'})
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
