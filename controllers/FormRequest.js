@@ -5,7 +5,12 @@ module.exports = {
     getAllData: (req, res) => {
         FormRequest.find()
         .populate({ path:'idUser'})
-        .populate({ path:'idPet'})
+        .populate({ 
+            path:'idPet',
+            populate: {
+                path: 'idBreed'
+            }
+        })
         .then(result => {
             res.status(200).send({
                 message: 'Get all data FormRequest',
