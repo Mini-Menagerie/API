@@ -43,6 +43,7 @@ module.exports = {
             _id: id,
         })
             .populate({ path: "idCategoryPet" })
+            .populate({ path: "idCollections" })
             .populate({ path: "idBreed" })
             .populate({ path: "idUser" })
             
@@ -87,7 +88,9 @@ module.exports = {
                 gender: {
                     $regex: req.query.gender,
                 },
-            }).populate("idCategoryPet");
+            }).populate("idCategoryPet")
+            .populate({ path: "idCollections" })
+            
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -108,7 +111,8 @@ module.exports = {
                     $regex: req.query.location,
                     $options: "i",
                 },
-            }).populate("idCategoryPet");
+            }).populate("idCategoryPet")
+            .populate({ path: "idCollections" })
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -190,6 +194,7 @@ module.exports = {
         try {
             const result = await Pet.find()
                 .populate("idCategoryPet")
+                .populate({ path: "idCollections" })
                 .populate({
                     path: "idBreed",
                     match: {
@@ -227,7 +232,9 @@ module.exports = {
                 ],
             })
                 .populate("idCategoryPet")
-                .populate("idBreed");
+                .populate("idBreed")
+                .populate({ path: "idCollections" })
+                
 
             console.log(result);
 
@@ -249,12 +256,14 @@ module.exports = {
                 })
                     .populate("idCategoryPet")
                     .populate("idBreed")
+                    .populate({ path: "idCollections" })
                     .sort({ petName: alphabet });
 
                 res.send({ result });
             } else {
                 const result = await Pet.find({})
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate("idBreed");
 
                 res.send({ result });
@@ -273,6 +282,7 @@ module.exports = {
                         categoryName: { $regex: category, $options: "i" },
                     },
                 })
+                .populate({ path: "idCollections" })
                 .populate("idBreed");
 
             const filterBreed = result.filter((item) => {
@@ -323,6 +333,7 @@ module.exports = {
                         },
                     })
                     .populate("idBreed")
+                    .populate({ path: "idCollections" })
                     .sort({ petName: alphabet });
 
                 const filterBreed = result.filter((item) => {
@@ -360,6 +371,7 @@ module.exports = {
                     $or: [{ size: size }, { gender: gender }],
                 })
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate({
                         path: "idBreed",
                         match: {
@@ -375,6 +387,7 @@ module.exports = {
             } else {
                 const result = await Pet.find()
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate({
                         path: "idBreed",
                         match: {
