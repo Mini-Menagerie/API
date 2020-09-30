@@ -11,6 +11,7 @@ module.exports = {
     
     verifyToken: (req, res, next) => {
         const bearerToken = req.headers.authorization // kalo sukses = token / gagal = undefined
+        // console.log(bearerToken);
         if(!bearerToken){
             res.status(401).json({
                 message: "Unauthorized"

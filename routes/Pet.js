@@ -35,4 +35,5 @@ route.get("/petgender/", findByGender);
 route.get("/petlocation/", findByLocation);
 route.get("/petdetail/", findDetailPet);
 
-module.exports = route;
+
+module.exports = route

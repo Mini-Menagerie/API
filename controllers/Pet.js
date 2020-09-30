@@ -1,5 +1,6 @@
 // Controllers for Pet
 const Pet = require("../models/Pet");
+const UserAccount = require("../models/UserAccount")
 
 module.exports = {
     createData: (req, res) => {
@@ -35,25 +36,27 @@ module.exports = {
                 });
             });
     },
-    detailData: (req, res) => {
+    detailData: async (req, res) => {
         const { id } = req.params;
-        Pet.findOne({
+        const pet = await Pet.findOne({
             _id: id,
         })
             .populate({ path: "idCategoryPet" })
             .populate({ path: "idBreed" })
             .populate({ path: "idUser" })
-            .then((result) => {
-                res.status(200).send({
-                    message: "Get all detail data Pet",
-                    result,
-                });
+            
+            const userAccount = await UserAccount.findOne({
+                idUser: pet.idUser._id
             })
-            .catch((error) => {
-                res.status(400).send({
-                    message: "Error",
-                    error,
-                });
+
+            let result = {
+                ...pet._doc,
+                idUser: {...pet.idUser._doc, email: userAccount.email}
+            }
+
+            res.status(200).send({
+                message: "Get all detail data Pet",
+                result
             });
     },
     updateData: (req, res) => {
@@ -124,7 +127,7 @@ module.exports = {
             let result = await Pet.find({})
                 .populate("idCategoryPet")
                 .populate("idBreed")
-                .populate("idUser");
+                .populate("idUser")
 
             let detailPet = await result.map((item) => {
                 var pet = {
