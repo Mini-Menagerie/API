@@ -30,12 +30,12 @@ route.get("/pet/breed/filter", filterPetCollection);
 route.get("/pet/breed/:category/filter", filterPetByCategory);
 route.get("/pet/breed/:category/:breed/filter", filterPetByCategoryBreed);
 route.get("/pet/category/:category", petByCategory);
-route.get("/pet/collection/:collection", petByCollection);
 route.get("/pet/:id", detailData);
 route.put("/pet/:id", verifyToken, updateData);
 route.get("/petgender/", findByGender);
 route.get("/petlocation/", findByLocation);
 route.get("/petdetail/", findDetailPet);
+route.get("/petdata/collection/:collection", petByCollection);
 
 
 module.exports = route

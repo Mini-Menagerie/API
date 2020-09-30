@@ -132,20 +132,40 @@ module.exports = {
                 .populate("idUser")
 
             let detailPet = await result.map((item) => {
-                var pet = {
-                    id: item._id,
-                    category: item.idCategoryPet.categoryName,
-                    breed: item.idBreed.breedName,
-                    petName: item.petName,
-                    gender: item.gender,
-                    age: item.age,
-                    weight: item.weight,
-                    size: item.size,
-                    location: item.location,
-                    about: item.about,
-                    image: item.image,
-                };
-                return pet;
+                if(item.idCollections === undefined){
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: "",
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                } else {
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: item.idCollections.collectionName,
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                }
+                
                 // console.log(pet);
             });
 
@@ -155,7 +175,8 @@ module.exports = {
                 (item) =>
                     item.category === firstLetterToUpperCase ||
                     item.breed === firstLetterToUpperCase ||
-                    item.location === firstLetterToUpperCase
+                    item.location === firstLetterToUpperCase ||
+                    item.collectionName === firstLetterToUpperCase
             );
             res.status(200).json({
                 data,
@@ -264,9 +285,21 @@ module.exports = {
         }
     },
     petByCollection: async (req, res) => {
-        const { collection } = req.params;
+        const {collection} = req.query;
+        console.log(collection);
         try {
-            const result = await Pet.find({collections: { $regex: collection}})
+            const result = await Pet.find()
+            .populate({
+                path: "idCollections",
+                match: {
+                    collectionName: {$regex: collection, $options: "i"},
+                },
+            })
+
+            const filterBreed = result.filter((item) => {
+                return item.idCategoryPet !== null;
+            });
+
             res.send({ result: result });
 
         } catch (error) {
