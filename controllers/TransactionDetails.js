@@ -4,7 +4,7 @@ const TransactionDetails = require('../models/TransactionDetails');
 module.exports = {
     getAllData: (req, res) => {
         TransactionDetails.find()
-        .populate('idTransaction')
+        .populate({path:'idTransaction', populate: {path: 'idUser'}})
         .populate('idProduct')
         .then(result => {
             res.status(200).send({
