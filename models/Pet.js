@@ -18,9 +18,10 @@ const petSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users',
     },
-    collections: [{
-        type: String,
-    }],
+    idCollections: {
+        type: Schema.Types.ObjectId,
+        ref: 'petCollection',   
+    },
     petName: {
         type: String
     },

@@ -29,14 +29,8 @@ module.exports = {
         const { idPet, collectionName } = req.body;
         try {
             let petCollection = await PetCollection.create({collectionName,idPet });
-            console.log(petCollection);
-            if (petCollection) {
-                let pet = await Pet.findOneAndUpdate(
-                    { _id: idPet },
-                    { $push: { collections: petCollection.collectionName } },
-                    { new: true }
-                )
-                if(pet){
+              
+                if(petCollection){
                     res.status(200).send({
                         message: 'success',
                     })
@@ -44,7 +38,6 @@ module.exports = {
                     res.status(400).send({})
                 }
             }
-        }
        catch(error){
            console.log(error);
            res.status(500).send({
