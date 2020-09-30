@@ -21,6 +21,7 @@ module.exports = {
     getAllData: (req, res) => {
         Pet.find()
             .populate({ path: "idCategoryPet" })
+            .populate({ path: "idCollections" })
             .populate({ path: "idBreed" })
             .then((result) => {
                 res.status(200).send({
@@ -125,6 +126,7 @@ module.exports = {
         const { search, category } = req.query;
         try {
             let result = await Pet.find({})
+                .populate("idCollections")
                 .populate("idCategoryPet")
                 .populate("idBreed")
                 .populate("idUser")
@@ -259,6 +261,17 @@ module.exports = {
             res.send({ result: filterBreed });
         } catch (error) {
             console.log(error);
+        }
+    },
+    petByCollection: async (req, res) => {
+        const { collection } = req.params;
+        try {
+            const result = await Pet.find({collections: { $regex: collection}})
+            res.send({ result: result });
+
+        } catch (error) {
+            console.log(error);
+            res.send({message: "internal server error"})
         }
     },
     filterPetByCategory: async (req, res) => {

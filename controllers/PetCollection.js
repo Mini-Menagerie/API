@@ -29,12 +29,10 @@ module.exports = {
         const { idPet, collectionName } = req.body;
         try {
             let petCollection = await PetCollection.create({collectionName,idPet });
-            console.log(petCollection);
-            if (petCollection) {
                 let pet = await Pet.findOneAndUpdate(
-                    { _id: idPet },
-                    { $push: { collections: petCollection.collectionName } },
-                    { new: true }
+                    {_id: idPet },
+                    {$push: {idCollections: petCollection._id}},
+                    {new: true}
                 )
                 if(pet){
                     res.status(200).send({
@@ -44,7 +42,6 @@ module.exports = {
                     res.status(400).send({})
                 }
             }
-        }
        catch(error){
            console.log(error);
            res.status(500).send({
