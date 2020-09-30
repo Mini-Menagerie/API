@@ -18,6 +18,9 @@ const petSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users',
     },
+    collections: [{
+        type: String,
+    }],
     petName: {
         type: String
     },
