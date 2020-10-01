@@ -25,6 +25,7 @@ const formRequestRouter = require('./routes/FormRequest')
 const petCollectionRouter = require('./routes/PetCollection')
 const listAdoptionTransactionRouter = require('./routes/ListAdoptionTransaction')
 const listProductTransactionRouter = require('./routes/ListProductTransaction')
+const emailRouter = require('./routes/Email')
 
 // Set up port
 const port = process.env.PORT;
@@ -57,6 +58,7 @@ app.use('/', formRequestRouter)
 app.use('/', petCollectionRouter)
 app.use('/', listAdoptionTransactionRouter)
 app.use('/', listProductTransactionRouter)
+app.use('/', emailRouter)
 
 // initialize passport
 app.use(passport.initialize());

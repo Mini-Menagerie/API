@@ -20,6 +20,13 @@ const userAccountSchema = new Schema({
     },
     password: {
         type: String
+    },
+    code: {
+        type: String
+    },
+    statusVerification: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true})
 
