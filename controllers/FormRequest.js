@@ -81,14 +81,22 @@ module.exports = {
         .populate({ 
             path:'idPet',
             populate: {
-                path: 'idBreed'
+                path: 'idBreed',
+                populate: {
+                    path: 'idCategoryPet'
+                },
+            },
+        })
+        .populate({
+            path: 'idPet',
+            populate: {
+                path: 'idUser'
             }
         })
         .then(result => {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
             });
-            console.log(filterReq)
 
 
             res.status(200).send({
