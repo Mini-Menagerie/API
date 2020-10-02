@@ -29,12 +29,15 @@ module.exports = {
         ListAdoptionTransaction.find()
             .populate({
                 path: "idPetUpForAdoption",
-                match: {
-                    idUser: id,
-                },
                 populate: {
                     path: "idUser",
                 },
+            })
+            .populate({ 
+                path:'idUser',
+                match: {
+                    _id: id
+                }
             })
             .then((result) => {
                 const filterHistory = result.filter((item) => {

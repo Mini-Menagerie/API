@@ -9,6 +9,11 @@ const listAdoptionTransactionSchema = new Schema({
         ref: 'petUpforAdoption',
         required: true
     },
+    idUser: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
     petName: {
         type: String
     },
