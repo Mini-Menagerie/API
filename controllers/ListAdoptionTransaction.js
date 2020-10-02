@@ -30,7 +30,7 @@ module.exports = {
             .populate({
                 path: "idPetUpForAdoption",
                 populate: {
-                    path: "idUser",
+                    path: "idPet",
                 },
             })
             .populate({ 
