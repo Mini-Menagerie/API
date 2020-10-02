@@ -136,6 +136,7 @@ module.exports = {
                 .populate("idUser")
 
             let detailPet = await result.map((item) => {
+                console.log(item.idCollections);
                 if(item.idCollections === undefined){
                     var pet = {
                         id: item._id,

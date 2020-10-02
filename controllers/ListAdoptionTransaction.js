@@ -36,6 +36,11 @@ module.exports = {
                     path: "idUser",
                 },
             })
+            .populate({
+                path: "idPetUpForAdoption", populate : {
+                    path: "idPet"
+                }
+            })
             .then((result) => {
                 const filterHistory = result.filter((item) => {
                     return item.idUser !== null;
@@ -63,6 +68,7 @@ module.exports = {
                 });
             })
             .catch((error) => {
+                console.log(error);
                 res.status(400).send({
                     message: "error",
                     error,
