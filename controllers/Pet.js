@@ -130,7 +130,7 @@ module.exports = {
         const { search, category } = req.query;
         try {
             let result = await Pet.find({})
-                .populate("idCollections")
+                .populate("idCollection")
                 .populate("idCategoryPet")
                 .populate("idBreed")
                 .populate("idUser")
@@ -170,8 +170,6 @@ module.exports = {
                     };
                     return pet;
                 }
-                
-                // console.log(pet);
             });
 
             let firstLetterToUpperCase =
