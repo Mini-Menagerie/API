@@ -1,6 +1,6 @@
 // Controllers for Pet
 const Pet = require("../models/Pet");
-const UserAccount = require("../models/UserAccount")
+const UserAccount = require("../models/UserAccount");
 
 module.exports = {
     createData: (req, res) => {
@@ -45,21 +45,21 @@ module.exports = {
             .populate({ path: "idCategoryPet" })
             .populate({ path: "idCollections" })
             .populate({ path: "idBreed" })
-            .populate({ path: "idUser" })
-            
-            const userAccount = await UserAccount.findOne({
-                idUser: pet.idUser._id
-            })
+            .populate({ path: "idUser" });
 
-            let result = {
-                ...pet._doc,
-                idUser: {...pet.idUser._doc, email: userAccount.email}
-            }
+        const userAccount = await UserAccount.findOne({
+            idUser: pet.idUser._id,
+        });
 
-            res.status(200).send({
-                message: "Get all detail data Pet",
-                result
-            });
+        let result = {
+            ...pet._doc,
+            idUser: { ...pet.idUser._doc, email: userAccount.email },
+        };
+
+        res.status(200).send({
+            message: "Get all detail data Pet",
+            result,
+        });
     },
     updateData: (req, res) => {
         const { id } = req.params;
@@ -88,9 +88,10 @@ module.exports = {
                 gender: {
                     $regex: req.query.gender,
                 },
-            }).populate("idCategoryPet")
-            .populate({ path: "idCollections" })
-            
+            })
+                .populate("idCategoryPet")
+                .populate({ path: "idCollections" });
+
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -111,8 +112,9 @@ module.exports = {
                     $regex: req.query.location,
                     $options: "i",
                 },
-            }).populate("idCategoryPet")
-            .populate({ path: "idCollections" })
+            })
+                .populate("idCategoryPet")
+                .populate({ path: "idCollections" });
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -133,11 +135,11 @@ module.exports = {
                 .populate("idCollection")
                 .populate("idCategoryPet")
                 .populate("idBreed")
-                .populate("idUser")
+                .populate("idUser");
 
             let detailPet = await result.map((item) => {
                 console.log(item.idCollections);
-                if(item.idCollections === undefined){
+                if (item.idCollections === undefined) {
                     var pet = {
                         id: item._id,
                         category: item.idCategoryPet.categoryName,
@@ -232,8 +234,7 @@ module.exports = {
             })
                 .populate("idCategoryPet")
                 .populate("idBreed")
-                .populate({ path: "idCollections" })
-                
+                .populate({ path: "idCollections" });
 
             console.log(result);
 
@@ -294,26 +295,17 @@ module.exports = {
         }
     },
     petByCollection: async (req, res) => {
-        const {collection} = req.query;
-        console.log(collection);
+        const { collection } = req.params;
         try {
-            const result = await Pet.find()
-            .populate({
-                path: "idCollections",
-                match: {
-                    collectionName: {$regex: collection, $options: "i"},
-                },
-            })
-
-            const filterBreed = result.filter((item) => {
-                return item.idCategoryPet !== null;
-            });
+            const result = await Pet.find({ idCollections: collection })
+                .populate("idCategoryPet")
+                .populate("idCollections")
+                .populate("idBreed");
 
             res.send({ result: result });
-
         } catch (error) {
             console.log(error);
-            res.send({message: "internal server error"})
+            res.send({ message: "internal server error" });
         }
     },
     filterPetByCategory: async (req, res) => {
