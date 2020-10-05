@@ -26,22 +26,28 @@ module.exports = {
             });
     },
     createData: async (req, res) => {
-        const { collectionName } = req.body;
-        try {
-            let petCollection = await PetCollection.create({
-                collectionName,
-            });
-
+        const { collectionName, idPet } = req.body;
+       try {
+        let petCollection = await PetCollection.create({collectionName,idPet });
+        let pet = await Pet.findOneAndUpdate(
+            {_id: idPet },
+            {$push: {idCollections: petCollection._id}},
+            {new: true}
+        )
+        if(pet){
             res.status(200).send({
-                message: "success",
-                result: petCollection,
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({
-                message: "internal server error",
-            });
+                message: 'success',
+            })
+        } else {
+            res.status(400).send({})
         }
+       }
+       catch(error){
+        console.log(error);
+        res.status(500).send({
+            message: "internal server error"
+        })
+       }
     },
     detailData: (req, res) => {
         const { id } = req.params;

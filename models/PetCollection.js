@@ -8,6 +8,11 @@ const petCollectionSchema = new Schema(
         collectionName: {
             type: String,
         },
+        idPet: {
+            type: Schema.Types.ObjectId,
+            ref: 'pet',
+            required: true
+        }
     },
     { timestamps: true }
 );

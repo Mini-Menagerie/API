@@ -132,14 +132,14 @@ module.exports = {
         const { search, category } = req.query;
         try {
             let result = await Pet.find({})
-                .populate("idCollection")
+                .populate("idCollections")
                 .populate("idCategoryPet")
                 .populate("idBreed")
                 .populate("idUser");
-
             let detailPet = await result.map((item) => {
-                console.log(item.idCollections);
-                if (item.idCollections === undefined) {
+                console.log(result);
+          
+                if (item.idCollections === null || item.idCollections === undefined) {
                     var pet = {
                         id: item._id,
                         category: item.idCategoryPet.categoryName,
