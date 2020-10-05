@@ -20,7 +20,7 @@ const petSchema = new Schema({
     },
     idCollections: {
         type: Schema.Types.ObjectId,
-        ref: 'petCollection',   
+        ref: 'petCollection',
     },
     petName: {
         type: String
