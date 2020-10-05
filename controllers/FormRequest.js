@@ -52,6 +52,11 @@ module.exports = {
         .populate({ path:'idUser'})
         .populate({ path:'idPet'})
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data FormRequest not found'
+                })
+            }
             res.status(200).send({
                 message: 'Get all detail data FormRequest',
                 result
@@ -83,9 +88,6 @@ module.exports = {
             const filterReq = result.filter((item) => {
                 return item.idUser !== null;
             });
-            console.log(filterReq)
-
-
             res.status(200).send({
                 message: 'Get all data based by id',
                 filterReq: filterReq

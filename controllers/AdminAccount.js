@@ -89,8 +89,13 @@ module.exports = {
             '_id': id
         })
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data CategoryPet not found'
+                })
+            }
             res.status(200).send({
-                message: 'Get all detail data CategoryPet',
+                message: 'Get detail data CategoryPet',
                 result
             })
         })
