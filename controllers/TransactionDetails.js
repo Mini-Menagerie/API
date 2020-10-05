@@ -45,6 +45,11 @@ module.exports = {
         .populate('idTransaction')
         .populate('idProduct')
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data TransactionDetails not found'
+                })
+            }
             res.status(200).send({
                 message: 'Get all detail data TransactionDetails',
                 result

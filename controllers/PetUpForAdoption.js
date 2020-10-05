@@ -48,6 +48,11 @@ module.exports = {
         .populate({ path:'idPet'})
         .populate({ path:'idRequest'})
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data PetUpForAdoption not found'
+                })
+            }
             res.status(200).send({
                 message: 'Get all detail data PetUpForAdoption',
                 result
@@ -289,6 +294,11 @@ module.exports = {
             _id: id
         })
         .then((result) => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'data not found'
+                })
+            }
             Pet.findOne({
                 _id: result.idPet
             })

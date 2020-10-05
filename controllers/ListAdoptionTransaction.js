@@ -80,6 +80,11 @@ module.exports = {
         })
             .populate({ path: "idPetUpForAdoption" })
             .then((result) => {
+                if(!result) {
+                  res.status(200).send({
+                    message: "data ListAdoptionTransaction not found"
+                  });
+                }
                 res.status(200).send({
                     message: "Get all detail data ListAdoptionTransaction",
                     result,
