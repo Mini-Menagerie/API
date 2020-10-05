@@ -42,11 +42,6 @@ module.exports = {
         })
         .populate({ path:'idCategoryPet'})
         .then(result => {
-            if(!result) {
-                res.status(404).send({
-                    message: 'detail data Breed not found',
-                })
-            }
             res.status(200).send({
                 message: 'Get all detail data Breed',
                 result

@@ -56,11 +56,6 @@ module.exports = {
         })
         .populate({ path:'idPet'})
         .then(result => {
-            if(!result) {
-                res.status(404).send({
-                    message: 'detail data PetImage not found'
-                })
-            }
             res.status(200).send({
                 message: 'Get all detail data PetImage',
                 result

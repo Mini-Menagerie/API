@@ -44,15 +44,10 @@ module.exports = {
             .populate({ path: "idBreed" })
             .populate({ path: "idUser" })
             .then((result) => {
-                if(!result) {
-                    res.status(404).send({
-                        message: "detail data Pet not found"
-                    })
-                }
                 res.status(200).send({
                     message: "Get all detail data Pet",
                     result,
-                })
+                });
             })
             .catch((error) => {
                 res.status(400).send({
