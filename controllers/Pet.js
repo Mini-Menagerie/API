@@ -1,5 +1,6 @@
 // Controllers for Pet
 const Pet = require("../models/Pet");
+const UserAccount = require("../models/UserAccount");
 
 module.exports = {
     createData: (req, res) => {
@@ -20,6 +21,7 @@ module.exports = {
     getAllData: (req, res) => {
         Pet.find()
             .populate({ path: "idCategoryPet" })
+            .populate({ path: "idCollections" })
             .populate({ path: "idBreed" })
             .then((result) => {
                 res.status(200).send({
@@ -35,26 +37,29 @@ module.exports = {
                 });
             });
     },
-    detailData: (req, res) => {
+    detailData: async (req, res) => {
         const { id } = req.params;
-        Pet.findOne({
+        const pet = await Pet.findOne({
             _id: id,
         })
             .populate({ path: "idCategoryPet" })
+            .populate({ path: "idCollections" })
             .populate({ path: "idBreed" })
-            .populate({ path: "idUser" })
-            .then((result) => {
-                res.status(200).send({
-                    message: "Get all detail data Pet",
-                    result,
-                });
-            })
-            .catch((error) => {
-                res.status(400).send({
-                    message: "Error",
-                    error,
-                });
-            });
+            .populate({ path: "idUser" });
+
+        const userAccount = await UserAccount.findOne({
+            idUser: pet.idUser._id,
+        });
+
+        let result = {
+            ...pet._doc,
+            idUser: { ...pet.idUser._doc, email: userAccount.email },
+        };
+
+        res.status(200).send({
+            message: "Get all detail data Pet",
+            result,
+        });
     },
     updateData: (req, res) => {
         const { id } = req.params;
@@ -83,7 +88,10 @@ module.exports = {
                 gender: {
                     $regex: req.query.gender,
                 },
-            }).populate("idCategoryPet");
+            })
+                .populate("idCategoryPet")
+                .populate({ path: "idCollections" });
+
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -104,7 +112,9 @@ module.exports = {
                     $regex: req.query.location,
                     $options: "i",
                 },
-            }).populate("idCategoryPet");
+            })
+                .populate("idCategoryPet")
+                .populate({ path: "idCollections" });
             if (result) {
                 res.status(200).json({
                     data: result,
@@ -122,26 +132,46 @@ module.exports = {
         const { search, category } = req.query;
         try {
             let result = await Pet.find({})
+                .populate("idCollection")
                 .populate("idCategoryPet")
                 .populate("idBreed")
                 .populate("idUser");
 
             let detailPet = await result.map((item) => {
-                var pet = {
-                    id: item._id,
-                    category: item.idCategoryPet.categoryName,
-                    breed: item.idBreed.breedName,
-                    petName: item.petName,
-                    gender: item.gender,
-                    age: item.age,
-                    weight: item.weight,
-                    size: item.size,
-                    location: item.location,
-                    about: item.about,
-                    image: item.image,
-                };
-                return pet;
-                // console.log(pet);
+                console.log(item.idCollections);
+                if (item.idCollections === undefined) {
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: "",
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                } else {
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: item.idCollections.collectionName,
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                }
             });
 
             let firstLetterToUpperCase =
@@ -150,7 +180,8 @@ module.exports = {
                 (item) =>
                     item.category === firstLetterToUpperCase ||
                     item.breed === firstLetterToUpperCase ||
-                    item.location === firstLetterToUpperCase
+                    item.location === firstLetterToUpperCase ||
+                    item.collectionName === firstLetterToUpperCase
             );
             res.status(200).json({
                 data,
@@ -164,6 +195,7 @@ module.exports = {
         try {
             const result = await Pet.find()
                 .populate("idCategoryPet")
+                .populate({ path: "idCollections" })
                 .populate({
                     path: "idBreed",
                     match: {
@@ -201,7 +233,8 @@ module.exports = {
                 ],
             })
                 .populate("idCategoryPet")
-                .populate("idBreed");
+                .populate("idBreed")
+                .populate({ path: "idCollections" });
 
             console.log(result);
 
@@ -223,12 +256,14 @@ module.exports = {
                 })
                     .populate("idCategoryPet")
                     .populate("idBreed")
+                    .populate({ path: "idCollections" })
                     .sort({ petName: alphabet });
 
                 res.send({ result });
             } else {
                 const result = await Pet.find({})
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate("idBreed");
 
                 res.send({ result });
@@ -247,6 +282,7 @@ module.exports = {
                         categoryName: { $regex: category, $options: "i" },
                     },
                 })
+                .populate({ path: "idCollections" })
                 .populate("idBreed");
 
             const filterBreed = result.filter((item) => {
@@ -256,6 +292,20 @@ module.exports = {
             res.send({ result: filterBreed });
         } catch (error) {
             console.log(error);
+        }
+    },
+    petByCollection: async (req, res) => {
+        const { collection } = req.params;
+        try {
+            const result = await Pet.find({ idCollections: collection })
+                .populate("idCategoryPet")
+                .populate("idCollections")
+                .populate("idBreed");
+
+            res.send({ result: result });
+        } catch (error) {
+            console.log(error);
+            res.send({ message: "internal server error" });
         }
     },
     filterPetByCategory: async (req, res) => {
@@ -274,6 +324,7 @@ module.exports = {
                         },
                     })
                     .populate("idBreed")
+                    .populate({ path: "idCollections" })
                     .sort({ petName: alphabet });
 
                 const filterBreed = result.filter((item) => {
@@ -311,6 +362,7 @@ module.exports = {
                     $or: [{ size: size }, { gender: gender }],
                 })
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate({
                         path: "idBreed",
                         match: {
@@ -326,6 +378,7 @@ module.exports = {
             } else {
                 const result = await Pet.find()
                     .populate("idCategoryPet")
+                    .populate({ path: "idCollections" })
                     .populate({
                         path: "idBreed",
                         match: {
