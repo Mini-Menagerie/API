@@ -120,6 +120,11 @@ module.exports = {
         })
         .populate({ path:'idUser'})
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data UserAccount not found'
+                })
+            }
             res.status(200).send({
                 message: 'Get all detail data UserAccount',
                 result
@@ -230,6 +235,11 @@ module.exports = {
             '_id': id
         })
         .then((result) => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'data not found'
+                })
+            }
             Users.deleteOne({
                 '_id' : result.idUser
             })

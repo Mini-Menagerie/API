@@ -45,6 +45,11 @@ module.exports = {
         })
         .populate('idUser')
         .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data Transaction'
+                })
+            }
             res.status(200).send({
                 message: 'Get all detail data Transaction',
                 result

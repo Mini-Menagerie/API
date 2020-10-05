@@ -61,6 +61,11 @@ module.exports = {
                 },
             })
             .then((result) => {
+                if(!result) {
+                    res.status(404).send({
+                        message: "detail data PetCollection not found"
+                    });
+                }
                 res.status(200).send({
                     message: "Get all detail data PetCollection",
                     result,
