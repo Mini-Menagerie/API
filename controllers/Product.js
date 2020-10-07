@@ -95,6 +95,7 @@ module.exports = {
         })
     },
     sortProductPriceLowToHigh: async (req, res) => {
+        const { filter } = req.query;
         let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
             let resultmap = pr.map(item => {
                 let t = {
@@ -108,28 +109,58 @@ module.exports = {
                 return t
             })
             let sorted = resultmap.sort((a,b) => a.price - b.price)
+            let data = sorted.filter(
+                (item) => item.categories === filter 
+            );
             res.status(200).send({
                 message: 'Get all data Product',
-                sorted
+                sorted : data.length == 0 ? sorted : data
             })
         },
-        sortProductPriceHighToLow: async (req, res) => {
-            let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
-                let resultmap = pr.map(item => {
-                    let t = {
-                        image: item.image,
-                        _id: item._id,
-                        productName: item.productName,
-                        categories: item.categories,
-                        price : parseInt(item.price),
-                        stock: parseInt(item.stock),
-                    }
-                    return t
-                })
-                let sorted = resultmap.sort((a,b) => b.price - a.price)
-                res.status(200).send({
-                    message: 'Get all data Product',
-                    sorted
-                })
-            }
+    sortProductPriceHighToLow: async (req, res) => {
+        const { filter } = req.query;
+        let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
+            let resultmap = pr.map(item => {
+                let t = {
+                    image: item.image,
+                    _id: item._id,
+                    productName: item.productName,
+                    categories: item.categories,
+                    price : parseInt(item.price),
+                    stock: parseInt(item.stock),
+                }
+                return t
+            })
+            let sorted = resultmap.sort((a,b) => b.price - a.price)
+            let data = sorted.filter(
+                (item) => item.categories === filter 
+            );
+            console.log(data.length);
+            res.status(200).send({
+                message: 'Get all data Product',
+                sorted : data.length == 0 ? sorted : data
+            })
+    },
+    productFilter: async (req, res) => {
+        const { search } = req.query;
+        let pr = await Product.find({}).populate({path: 'productImage', select: 'urlImage'})
+            let resultmap = pr.map(item => {
+                let t = {
+                    image: item.image,
+                    _id: item._id,
+                    productName: item.productName,
+                    categories: item.categories,
+                    price : parseInt(item.price),
+                    stock: parseInt(item.stock),
+                }
+                return t
+            })
+            let data = resultmap.filter(
+                (item) => item.categories === search 
+            );
+            res.status(200).send({
+                message: 'Get all data Product',
+                result : data
+            })
+    }
 }
