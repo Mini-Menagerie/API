@@ -10,12 +10,14 @@ const {
     updateData,
     deleteData,
     sortProductPriceLowToHigh,
-    sortProductPriceHighToLow
+    sortProductPriceHighToLow,
+    productFilter
 } = require('../controllers/Product')
 
 route.get('/product', getAllData)
 route.get('/sortProductLowToHigh', sortProductPriceLowToHigh)
 route.get('/sortProductHighToLow', sortProductPriceHighToLow)
+route.get('/product/filter', productFilter)
 route.post('/product/create', verifyToken, createData)
 route.get('/product/:id', detailData)
 route.put('/product/:id', verifyToken, updateData)
