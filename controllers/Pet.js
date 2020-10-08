@@ -1,6 +1,7 @@
 // Controllers for Pet
 const Pet = require("../models/Pet");
 const UserAccount = require("../models/UserAccount");
+const PetUpForAdoption = require('../models/PetUpForAdoption');
 
 module.exports = {
     createData: (req, res) => {
@@ -131,60 +132,32 @@ module.exports = {
     findDetailPet: async (req, res) => {
         const { search, category } = req.query;
         try {
-            let result = await Pet.find({})
-                .populate("idCollections")
-                .populate("idCategoryPet")
-                .populate("idBreed")
-                .populate("idUser");
-            let detailPet = await result.map((item) => {
-                console.log(result);
-          
-                if (item.idCollections === null || item.idCollections === undefined) {
-                    var pet = {
-                        id: item._id,
-                        category: item.idCategoryPet.categoryName,
-                        breed: item.idBreed.breedName,
-                        collectionName: "",
-                        petName: item.petName,
-                        gender: item.gender,
-                        age: item.age,
-                        weight: item.weight,
-                        size: item.size,
-                        location: item.location,
-                        about: item.about,
-                        image: item.image,
-                    };
-                    return pet;
-                } else {
-                    var pet = {
-                        id: item._id,
-                        category: item.idCategoryPet.categoryName,
-                        breed: item.idBreed.breedName,
-                        collectionName: item.idCollections.collectionName,
-                        petName: item.petName,
-                        gender: item.gender,
-                        age: item.age,
-                        weight: item.weight,
-                        size: item.size,
-                        location: item.location,
-                        about: item.about,
-                        image: item.image,
-                    };
-                    return pet;
-                }
-            });
+            let result = await PetUpForAdoption.find()
+            .populate({ path:'idUser'})
+            .populate({ 
+                path:'idPet',
+                populate: [{
+                    path: 'idBreed',
+                }, {
+                    path: 'idCategoryPet'
+                }, {
+                    path: 'idUser'
+                }]
+            })
+            .populate({ path:'idRequest'});
 
             let firstLetterToUpperCase =
                 search.charAt(0).toUpperCase() + search.slice(1);
-            let data = detailPet.filter(
+            let data = result.filter(
                 (item) =>
-                    item.category === firstLetterToUpperCase ||
-                    item.breed === firstLetterToUpperCase ||
-                    item.location === firstLetterToUpperCase ||
-                    item.collectionName === firstLetterToUpperCase
+                    item.idPet.idCategoryPet.categoryName === firstLetterToUpperCase ||
+                    item.idPet.idBreed.breedName === firstLetterToUpperCase ||
+                    item.idPet.location === firstLetterToUpperCase
             );
+
+            console.log(data);
             res.status(200).json({
-                data,
+                result: data,
             });
         } catch (error) {
             console.log(error);
