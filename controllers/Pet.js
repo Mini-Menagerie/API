@@ -1,7 +1,7 @@
 // Controllers for Pet
 const Pet = require("../models/Pet");
 const UserAccount = require("../models/UserAccount");
-const PetUpForAdoption = require('../models/PetUpForAdoption');
+const PetUpForAdoption = require("../models/PetUpForAdoption");
 
 module.exports = {
     createData: (req, res) => {
@@ -129,7 +129,7 @@ module.exports = {
             console.log(error);
         }
     },
-    findDetailPet: async (req, res) => {
+    findDetailPets: async (req, res) => {
         const { search, category } = req.query;
         try {
             let result = await PetUpForAdoption.find()
@@ -154,8 +154,75 @@ module.exports = {
                     item.idPet.idBreed.breedName === firstLetterToUpperCase ||
                     item.idPet.location === firstLetterToUpperCase
             );
+
+            console.log(data);
             res.status(200).json({
                 result: data,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    findDetailPet: async (req, res) => {
+        const { search, category } = req.query;
+        try {
+            let result = await Pet.find({})
+                .populate("idCollections")
+                .populate("idCategoryPet")
+                .populate("idBreed")
+                .populate("idUser");
+            let detailPet = await result.map((item) => {
+                console.log(result);
+
+                if (
+                    item.idCollections === null ||
+                    item.idCollections === undefined
+                ) {
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: "",
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                } else {
+                    var pet = {
+                        id: item._id,
+                        category: item.idCategoryPet.categoryName,
+                        breed: item.idBreed.breedName,
+                        collectionName: item.idCollections.collectionName,
+                        petName: item.petName,
+                        gender: item.gender,
+                        age: item.age,
+                        weight: item.weight,
+                        size: item.size,
+                        location: item.location,
+                        about: item.about,
+                        image: item.image,
+                    };
+                    return pet;
+                }
+            });
+
+            let firstLetterToUpperCase =
+                search.charAt(0).toUpperCase() + search.slice(1);
+            let data = detailPet.filter(
+                (item) =>
+                    item.category === firstLetterToUpperCase ||
+                    item.breed === firstLetterToUpperCase ||
+                    item.location === firstLetterToUpperCase ||
+                    item.collectionName === firstLetterToUpperCase
+            );
+            res.status(200).json({
+                data,
             });
         } catch (error) {
             console.log(error);
@@ -325,59 +392,77 @@ module.exports = {
 
         try {
             if (size !== "" || gender !== "" || alphabet !== "") {
-                let catg = 
-                category.charAt(0).toUpperCase() + category.slice(1);
+                let catg = category.charAt(0).toUpperCase() + category.slice(1);
 
                 let result = await PetUpForAdoption.find()
-                    .populate({ path:'idUser'})
-                    .populate({ 
-                        path:'idPet',
-                        populate: [{
-                            path: 'idBreed',
-                        }, {
-                            path: 'idCategoryPet'
-                        }, {
-                            path: 'idUser'
-                        }]
+                    .populate({ path: "idUser" })
+                    .populate({
+                        path: "idPet",
+                        populate: [
+                            {
+                                path: "idBreed",
+                            },
+                            {
+                                path: "idCategoryPet",
+                            },
+                            {
+                                path: "idUser",
+                            },
+                        ],
                     })
-                    .populate({ path:'idRequest'});
+                    .populate({ path: "idRequest" });
 
                 const filterPet = result.filter(
-                    (item) => item.idPet.size === size &&
-                              item.idPet.gender === gender &&
-                              item.idPet.idCategoryPet.categoryName === catg &&
-                              item.idPet.idBreed.breedName === breed
+                    (item) =>
+                        item.idPet.size === size &&
+                        item.idPet.gender === gender &&
+                        item.idPet.idCategoryPet.categoryName === catg &&
+                        item.idPet.idBreed.breedName === breed
                 );
 
-                if(alphabet === "asc") {
-                    let filterAsc = filterPet.sort((a,b) => 
-                        (a.idPet.petName > b.idPet.petName) ? 1 : ((b.idPet.petName > a.idPet.petName) ? -1 : 0)); 
-                    res.send({ 
-                        result: filterAsc
+                if (alphabet === "asc") {
+                    let filterAsc = filterPet.sort((a, b) =>
+                        a.idPet.petName > b.idPet.petName
+                            ? 1
+                            : b.idPet.petName > a.idPet.petName
+                            ? -1
+                            : 0
+                    );
+                    res.send({
+                        result: filterAsc,
                     });
-                }else if(alphabet === "desc") {
-                    let filterDesc = filterPet.sort((a,b) => 
-                        (a.idPet.petName < b.idPet.petName) ? 1 : ((b.idPet.petName < a.idPet.petName) ? -1 : 0)); 
+                } else if (alphabet === "desc") {
+                    let filterDesc = filterPet.sort((a, b) =>
+                        a.idPet.petName < b.idPet.petName
+                            ? 1
+                            : b.idPet.petName < a.idPet.petName
+                            ? -1
+                            : 0
+                    );
 
                     res.send({ result: filterDesc });
                 }
             } else {
                 let result = await PetUpForAdoption.find()
-                    .populate({ path:'idUser'})
-                    .populate({ 
-                        path:'idPet',
-                        populate: [{
-                            path: 'idBreed',
-                            match: {
-                                breedName: { $regex: breed, $options: "i" },
+                    .populate({ path: "idUser" })
+                    .populate({
+                        path: "idPet",
+                        populate: [
+                            {
+                                path: "idBreed",
+                                match: {
+                                    breedName: { $regex: breed, $options: "i" },
+                                },
                             },
-                        }, {
-                            path: 'idCategoryPet'
-                        }, {
-                            path: 'idUser'
-                        }]
+                            {
+                                path: "idCategoryPet",
+                            },
+                            {
+                                path: "idUser",
+                            },
+                        ],
                     })
-                    .populate({ path:'idRequest'});
+                    .populate({ path: "idRequest" });
 
                 const filterBreed = filterPet.filter((item) => {
                     return item.idPet.idBreed !== null;
