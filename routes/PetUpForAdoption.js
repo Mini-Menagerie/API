@@ -15,7 +15,8 @@ const {
     approveData,
     rejectData,
     completeData,
-    deleteData
+    deleteData,
+    getPetUpForAdoptionFromIdPet
 } = require('../controllers/PetUpForAdoption')
 
 route.get('/petUpForAdoption', getAllData)
@@ -30,5 +31,6 @@ route.put('/petUpForAdoption/approve/:id', verifyToken, approveData)
 route.put('/petUpForAdoption/reject/:id', verifyToken, rejectData)
 route.put('/petUpForAdoption/complete/:id', verifyToken, completeData)
 route.delete('/petUpForAdoption/:id', verifyToken, deleteData)
+route.get('/petUpForAdoption/pet/:id', getPetUpForAdoptionFromIdPet)
 
 module.exports = route
