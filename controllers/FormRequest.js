@@ -74,6 +74,31 @@ module.exports = {
             })
         })
     },
+    detailFormPetData: (req, res) => {
+        const {id} = req.params;
+        FormRequest.findOne({
+            idPet : id
+        })
+        .populate({ path:'idUser'})
+        .populate({ path:'idPet'})
+        .then(result => {
+            if(!result) {
+                res.status(404).send({
+                    message: 'detail data FormRequest not found'
+                })
+            }
+            res.status(200).send({
+                message: 'Get all detail data FormRequest',
+                result
+            })
+        })
+        .catch(error => {
+            res.status(500).send({
+                message: 'Error',
+                error
+            })
+        })
+    },
     allReqData: (req, res) => {
         const {id} = req.params;
         FormRequest.find()

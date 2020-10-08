@@ -7,6 +7,7 @@ const {
     getAllData,
     createData,
     detailData,
+    detailFormPetData,
     allReqData,
     allApproveData,
     allRejectData,
@@ -21,6 +22,7 @@ const {
 route.get('/formRequest', getAllData)
 route.post('/formRequest/create', createData)
 route.get('/formRequest/:id', detailData)
+route.get('/formRequest/pet/:id', detailFormPetData)
 route.get('/formRequest/all/:id', allReqData)
 route.get('/formRequest/approve/:id', allApproveData)
 route.get('/formRequest/reject/:id', allRejectData)
