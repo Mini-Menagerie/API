@@ -242,11 +242,11 @@ module.exports = {
         PetUpForAdoption.findOneAndUpdate({ 
             '_id' : id
         }, {
-            status: 'Approved'
+            status: 'Completed'
         })
         .then(result => {
             res.status(200).send({
-                message: 'Approved',
+                message: 'Competed',
                 result
             })
         })
@@ -342,7 +342,7 @@ module.exports = {
     },
     getPetUpForAdoptionFromIdPet : async (req, res) => {
         const {id} = req.params
-        let result = await PetUpForAdoption.findOne()
+        let result = await PetUpForAdoption.find()
         .populate({
             path: 'idPet',
             match: {

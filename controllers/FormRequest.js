@@ -254,6 +254,7 @@ module.exports = {
     },
     updateData: (req,res) => {
         const {id} = req.params;
+        console.log(req.body);
         FormRequest.findOneAndUpdate({ 
             '_id' : id
         },req.body)
