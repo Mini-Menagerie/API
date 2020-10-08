@@ -8,8 +8,21 @@ module.exports = {
                 path: "idPetUpForAdoption",
                 populate: {
                     path: "idPet",
+                    populate: {
+                        path: "idCategoryPet",                       
+                    },                     
                 },
             })
+            .populate({
+                path: "idPetUpForAdoption",
+                populate: {
+                    path: "idPet",
+                    populate: {
+                        path: "idBreed",                       
+                    },                     
+                },
+            })
+            
             .then((result) => {
                 console.log(result);
                 res.status(200).send({
