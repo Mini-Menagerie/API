@@ -27,6 +27,7 @@ module.exports = {
     },
     createData: async (req, res) => {
         const { collectionName, idPet } = req.body;
+        console.log(req.body)
        try {
         let petCollection = await PetCollection.create({collectionName,idPet });
         let pet = await Pet.findOneAndUpdate(
@@ -43,7 +44,6 @@ module.exports = {
         }
        }
        catch(error){
-        console.log(error);
         res.status(500).send({
             message: "internal server error"
         })
