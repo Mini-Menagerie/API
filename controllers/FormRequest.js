@@ -9,6 +9,9 @@ module.exports = {
             path:'idPet',
             populate: {
                 path: 'idBreed'
+            },
+            populate: {
+                path: 'idUser'
             }
         })
         .then(result => {

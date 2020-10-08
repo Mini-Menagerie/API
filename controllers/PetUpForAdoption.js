@@ -339,5 +339,26 @@ module.exports = {
                 error
             })
         })
+    },
+    getPetUpForAdoptionFromIdPet : async (req, res) => {
+        const {id} = req.params
+        let result = await PetUpForAdoption.findOne()
+        .populate({
+            path: 'idPet',
+            match: {
+                _id: id
+            }
+        })
+        .populate({
+            path: 'idPet',
+            populate : {
+                path: 'idUser'
+            }
+        })
+        if(result){
+            res.status(200).json({
+                result: result
+            })
+        }
     }
 }
