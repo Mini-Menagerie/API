@@ -7,7 +7,16 @@ module.exports = {
     getAllData: (req, res) => {
         PetUpForAdoption.find()
         .populate({ path:'idUser'})
-        .populate({ path:'idPet'})
+        .populate({ 
+            path:'idPet',
+            populate: [{
+                path: 'idBreed',
+            }, {
+                path: 'idCategoryPet'
+            }, {
+                path: 'idUser'
+            }]
+        })
         .populate({ path:'idRequest'})
         .then(result => {
             res.status(200).send({
