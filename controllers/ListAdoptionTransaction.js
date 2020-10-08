@@ -70,7 +70,6 @@ module.exports = {
             });
     },
     createData: (req, res) => {
-        console.log(req.body);
         ListAdoptionTransaction.create(req.body)
             .then((result) => {
                 res.status(200).send({
