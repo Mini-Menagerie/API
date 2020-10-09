@@ -150,6 +150,7 @@ module.exports = {
                 search.charAt(0).toUpperCase() + search.slice(1);
             let data = result.filter(
                 (item) =>
+                    item.idPet.petName === firstLetterToUpperCase ||
                     item.idPet.idCategoryPet.categoryName === firstLetterToUpperCase ||
                     item.idPet.idBreed.breedName === firstLetterToUpperCase ||
                     item.idPet.location === firstLetterToUpperCase
