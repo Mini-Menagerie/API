@@ -7,12 +7,11 @@ module.exports = {
         .populate({ path:'idUser'})
         .populate({ 
             path:'idPet',
-            populate: {
+            populate: [{
                 path: 'idBreed'
-            },
-            populate: {
+            }, {
                 path: 'idUser'
-            }
+            }]
         })
         .then(result => {
             res.status(200).send({
